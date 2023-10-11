@@ -9,7 +9,7 @@ function ServerView() {
     return (
       <Container sx={{padding: "3em", height:"100vh"}}>
         <Header/>
-        <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)"}}>
+        <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)", overflow: "auto"}}>
           <CardContent sx={{height: "100%"}}>
             <Stack direction="column" spacing={2} height={"calc(100% - 32px)"}>
               <Stack direction="row" sx={{justifyContent: 'space-between'}}>
@@ -104,7 +104,7 @@ function ServerView() {
                           <FontAwesomeIcon icon={faDownload}/>
                       </IconButton>
               </Stack>
-              <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, overflow: "auto"}}>
+              <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, overflow: "auto", minHeight: "100px"}}>
                 <CardContent>
                   <List>
                     <ListItem sx={{backgroundColor: "white", borderRadius:"25px"}}>

@@ -1,7 +1,7 @@
 import { AppBar, Box, Container, IconButton, Toolbar} from "@mui/material";
 import  seeLogo from "../img/see-logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
 
 function Header() {
@@ -19,6 +19,9 @@ function Header() {
                     </IconButton>
                     <IconButton size="large" onClick={() => navigate('/personalSettings')}>
                         <FontAwesomeIcon icon={faUser}/>
+                    </IconButton>
+                    <IconButton size="large" onClick={() => navigate('/')}>
+                        <FontAwesomeIcon icon={faRightFromBracket}/>
                     </IconButton>
                 </Toolbar>
             </Container>
