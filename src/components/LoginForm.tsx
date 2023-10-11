@@ -15,9 +15,9 @@ function LoginForm() {
             title="SEE Logo"
         />
         <CardContent>
-            <TextField label="Benutzername" type="text" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}}/>
-            <TextField label="Passwort" type="password" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}}/>
-            <Button variant="contained" sx={{width:"100%", borderRadius: "15px"}} onClick={() => navigate("/home")}>Anmelden</Button>
+            <TextField label="Benutzername" type="text" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}} variant="standard"/>
+            <TextField label="Passwort" type="password" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}} variant="standard"/>
+            <Button variant="contained" sx={{width:"100%", borderRadius: "15px", marginTop: "1em"}} onClick={() => navigate("/home")}>Anmelden</Button>
         </CardContent>
       </Card>
     )
