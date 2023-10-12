@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Container, Stack } from "@mui/material";
+import {Card, CardContent, Stack } from "@mui/material";
 import ServerListItem from "./ServerListItem";
 
 function ServerList() {

@@ -1,17 +1,13 @@
-import { Box, Button, Card, CardActionArea, CardContent, Chip, Container, Grid, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, TextField, Typography } from "@mui/material";
+import {Button, Card, CardContent, Container, Stack, TextField, Typography } from "@mui/material";
 import Header from "../components/Header";
-import ServerList from "../components/ServerList";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faShare } from "@fortawesome/free-solid-svg-icons";
-import { grey } from "@mui/material/colors";
 
 function PersonalSettingsView() {
     return (
       <Container sx={{padding: "3em", height:"100vh"}}>
         <Header/>
         <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)", overflow: "auto"}}>
-          <CardContent sx={{height: "100%"}}>
-            <Stack direction="column" spacing={2} height={"calc(100% - 32px)"}>
+          <CardContent sx={{height: "calc(100% - 3em)"}}>
+            <Stack direction="column" spacing={2} height={"100%"}>
               <Typography variant="h4">Benutzereinstellungen</Typography>              
               <Typography variant="h6">Benutzername ändern:</Typography>
               <TextField label="Neuer Benutzername" variant="standard"/>

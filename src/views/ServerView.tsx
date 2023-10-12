@@ -1,17 +1,27 @@
-import { Box, Button, Card, CardActionArea, CardContent, Chip, Container, Grid, IconButton, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
+import { Box, Card, CardContent, Chip, Container, Grid, IconButton, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 import Header from "../components/Header";
-import ServerList from "../components/ServerList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faPause, faPenToSquare, faPlay, faRotate, faShare, faStop } from "@fortawesome/free-solid-svg-icons";
-import { blueGrey, grey } from "@mui/material/colors";
+import { faDownload, faPenToSquare, faPlay, faRotate, faShare, faStop } from "@fortawesome/free-solid-svg-icons";
+import { grey } from "@mui/material/colors";
+import Avatar from "../components/Avatar";
 
 function ServerView() {
+    let avatarSeed = "";
+
+    for(let i = 0; i < 18; i++){
+      avatarSeed = avatarSeed + Math.round(Math.random()).toString();
+    }
+    
+    const red = (Math.floor(Math.random() * 150) + 100).toString();
+    const green = (Math.floor(Math.random() * 150) + 100).toString();
+    const blue = (Math.floor(Math.random() * 150) + 100).toString();
+
     return (
       <Container sx={{padding: "3em", height:"100vh"}}>
         <Header/>
         <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)", overflow: "auto"}}>
-          <CardContent sx={{height: "100%"}}>
-            <Stack direction="column" spacing={2} height={"calc(100% - 32px)"}>
+          <CardContent sx={{height: "calc(100% - 3em)"}}>
+            <Stack direction="column" spacing={2} height={"100%"}>
               <Stack direction="row" sx={{justifyContent: 'space-between'}}>
                 <Stack direction="row">
                   <Typography variant="h4">Gameserver#01</Typography>
@@ -53,9 +63,7 @@ function ServerView() {
                   <Stack direction="column" spacing={1}>
                     <Box width={140} height={140}>
                       <Card sx={{width: "100%", height: "100%"}}>
-                        <CardActionArea>
-                          
-                        </CardActionArea>
+                        <Avatar width={140} height={140} avatarSeed={avatarSeed} avatarColor={`rgb(${red}, ${green}, ${blue})`}/>
                       </Card>
                     </Box>
                   </Stack>
@@ -109,6 +117,27 @@ function ServerView() {
                   <List>
                     <ListItem sx={{backgroundColor: "white", borderRadius:"25px"}}>
                       <ListItemText> <Typography variant="subtitle2">test.gxl</Typography> </ListItemText>
+                    </ListItem>
+                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
+                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
+                    </ListItem>
+                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
+                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
+                    </ListItem>
+                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
+                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
+                    </ListItem>
+                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
+                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
+                    </ListItem>
+                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
+                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
+                    </ListItem>
+                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
+                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
+                    </ListItem>
+                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
+                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
                     </ListItem>
                     <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
                       <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>

@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActionArea, CardContent, Chip, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
+import {Button, Container } from "@mui/material";
 import Header from "../components/Header";
 import ServerList from "../components/ServerList";
 import { useNavigate } from "react-router";

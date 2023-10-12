@@ -1,9 +1,3 @@
-import { AppBar, Box, Container, IconButton, Toolbar} from "@mui/material";
-import  seeLogo from "../img/see-logo.png";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faCog } from '@fortawesome/free-solid-svg-icons'
-import { useNavigate } from "react-router";
-import { height } from "@fortawesome/free-solid-svg-icons/fa0";
 import { useEffect, useRef } from "react";
 
 function Avatar(props: {width:number, height:number, avatarSeed: string, avatarColor: string}) {

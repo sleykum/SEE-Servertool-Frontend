@@ -6,7 +6,7 @@ import CreateServerView from './views/CreateServerView'
 import SettingsView from './views/SettingsView'
 import PersonalSettingsView from './views/PersonalSettingsView'
 import { ThemeProvider } from '@emotion/react'
-import { PaletteColorOptions, createTheme } from '@mui/material'
+import { createTheme } from '@mui/material'
 import { blueGrey } from '@mui/material/colors'
 
 const theme = createTheme(

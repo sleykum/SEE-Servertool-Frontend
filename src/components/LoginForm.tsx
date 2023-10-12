@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, TextField } from "@mui/material";
+import { Button, Card, CardContent, CardMedia, Divider, TextField } from "@mui/material";
 import  seeLogo from "../img/see-logo.png";
 import { useNavigate } from "react-router";
 
@@ -14,6 +14,7 @@ function LoginForm() {
             image={seeLogo}
             title="SEE Logo"
         />
+        <Divider/>
         <CardContent>
             <TextField label="Benutzername" type="text" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}} variant="standard"/>
             <TextField label="Passwort" type="password" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}} variant="standard"/>
