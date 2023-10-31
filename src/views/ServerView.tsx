@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Chip, CircularProgress, Container, Grid, IconButton, List, ListItem, ListItemText, Modal, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Container, Grid, IconButton, List, ListItem, ListItemText, Modal, Snackbar, Stack, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faPlay, faShare, faStop, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -28,6 +28,7 @@ function ServerView() {
 
     const [server, setServer] = useState<Server|undefined>(undefined);
     const [showDeleteServerModal, setShowDeleteServerModal] = useState(false);
+    const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
 
     useEffect(() => {
       //TODO: fetch from backend
@@ -44,6 +45,11 @@ function ServerView() {
     }
     return (
       <Container sx={{padding: "3em", height:"100vh"}}>
+        <Snackbar open={showLinkCopiedMessage} autoHideDuration={5000} onClose={() => setShowLinkCopiedMessage(false)}>
+          <Alert onClose={() => setShowLinkCopiedMessage(false)} severity="success" sx={{width: "100%", borderRadius: "25px"}}>
+            Link in Zwischenablage kopiert.
+          </Alert>
+        </Snackbar>
         <Modal
           open={showDeleteServerModal}
           onClose={() => setShowDeleteServerModal(false)}
@@ -147,9 +153,11 @@ function ServerView() {
                             size="large" 
                             sx={{display: "flex", flexDirection: "column"}} 
                             onMouseDown={(e) => {e.stopPropagation()}} 
-                            onClick={(e) => {e.stopPropagation();
+                            onClick={(e) => {
+                              e.stopPropagation();
                               e.preventDefault();
-                              navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`)
+                              navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`);
+                              setShowLinkCopiedMessage(true);
                       }}>
                           <FontAwesomeIcon icon={faShare}/>
                           <Typography variant="button">Link teilen</Typography>

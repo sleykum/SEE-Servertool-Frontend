@@ -18,7 +18,7 @@ function ServerListItem(props: {server: Server}) {
         <Box width={"100%"}>
             <Snackbar open={showLinkCopiedMessage} autoHideDuration={5000} onClose={() => setShowLinkCopiedMessage(false)}>
               <Alert onClose={() => setShowLinkCopiedMessage(false)} severity="success" sx={{width: "100%", borderRadius: "25px"}}>
-                Link in zwischenablage kopiert
+                Link in Zwischenablage kopiert.
               </Alert>
             </Snackbar>
             <Card sx={{borderRadius:"25px"}}> 
