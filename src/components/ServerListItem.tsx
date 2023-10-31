@@ -1,18 +1,26 @@
-import {Box, Card, CardActionArea, CardContent, Chip, Grid, IconButton, Stack, Typography} from "@mui/material";
+import {Alert, Box, Card, CardActionArea, CardContent, Chip, Grid, IconButton, Snackbar, Stack, Typography} from "@mui/material";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShare } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
 import Avatar from "./Avatar";
 import Server from "../types/Server";
 import ServerStatus from "../types/ServerStatus";
+import { useState } from "react";
 
 function ServerListItem(props: {server: Server}) {
     const navigate = useNavigate();
+
+    const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
 
     const server = props.server;
 
     return (
         <Box width={"100%"}>
+            <Snackbar open={showLinkCopiedMessage} autoHideDuration={5000} onClose={() => setShowLinkCopiedMessage(false)}>
+              <Alert onClose={() => setShowLinkCopiedMessage(false)} severity="success" sx={{width: "100%", borderRadius: "25px"}}>
+                Link in zwischenablage kopiert
+              </Alert>
+            </Snackbar>
             <Card sx={{borderRadius:"25px"}}> 
               <CardActionArea onClick={() => navigate('/server', {state: {serverID : server.id}})}>
                 <CardContent>
@@ -61,7 +69,8 @@ function ServerListItem(props: {server: Server}) {
                                 onMouseDown={(e) => {e.stopPropagation()}} 
                                 onClick={(e) => {e.stopPropagation();
                                                 e.preventDefault();
-                                                navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`)
+                                                navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`);
+                                                setShowLinkCopiedMessage(true);
                             }}>
                               <FontAwesomeIcon icon={faShare}/>
                               <Typography variant="button">Link teilen</Typography>
