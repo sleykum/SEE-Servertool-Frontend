@@ -27,7 +27,7 @@ function ServerListItem(props: {server: Server}) {
                   <Grid container spacing={2}>
                     <Grid item md={3} xs={12}>
                       <Stack direction="column" spacing={1}>
-                        <Typography variant="h6">Gameserver #01</Typography>
+                        <Typography variant="h6">{server.name}</Typography>
                         <Box width={100} height={100}>
                           <Card sx={{width: "100%", height: "100%"}}>
                             <Avatar width={100} height={100} avatarSeed={server.avatarSeed} avatarColor={server.avatarColor}/>
