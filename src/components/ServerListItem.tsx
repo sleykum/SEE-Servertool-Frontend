@@ -14,7 +14,7 @@ function ServerListItem(props: {server: Server}) {
     return (
         <Box width={"100%"}>
             <Card sx={{borderRadius:"25px"}}> 
-              <CardActionArea onClick={() => navigate('/server', {state: {'serverID': 'test'}})}>
+              <CardActionArea onClick={() => navigate('/server', {state: {serverID : server.id}})}>
                 <CardContent>
                   <Grid container spacing={2}>
                     <Grid item md={3} xs={12}>

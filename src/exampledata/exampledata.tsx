@@ -5,8 +5,8 @@ import User from "../types/User"
 
 const dummyUsers: Array<User> = [
     {id: "0", username: "Administrator", role: Role.Admin},
-    {id: "1", username: "Benutzer 1", role: Role.Admin},
-    {id: "2", username: "Benutzer 2", role: Role.Admin}
+    {id: "1", username: "Benutzer 1", role: Role.User},
+    {id: "2", username: "Benutzer 2", role: Role.User}
 ]
 
 const dummyServers: Array<Server> = [
@@ -14,6 +14,7 @@ const dummyServers: Array<Server> = [
         id: "0", 
         ip: "127.0.0.1", 
         port: "1111", 
+        name: "Server #01",
         avatarSeed: "101101101110001011", 
         avatarColor: `rgb(145, 177, 227)`,
         connectedPlayers: 5,
@@ -24,11 +25,16 @@ const dummyServers: Array<Server> = [
         loadedProject: "testProject1",
         lastSaved: new Date("2011-10-04T10:21:00.000+09:00"),
         status: ServerStatus.Online,
+        projectFiles: [
+            {id: "0", name: "test.gxl"},
+            {id: "1", name: "test.csv"}
+        ]
     },
     {
         id: "1", 
         ip: "127.0.0.1", 
         port: "2222", 
+        name: "Server #02",
         avatarSeed: "110101011010111010", 
         avatarColor: `rgb(250, 200, 227)`,
         connectedPlayers: 2,
@@ -39,11 +45,16 @@ const dummyServers: Array<Server> = [
         loadedProject: "testProject2",
         lastSaved: new Date(),
         status: ServerStatus.Offline,
+        projectFiles: [
+            {id: "2", name: "test1.gxl"},
+            {id: "3", name: "test1.csv"}
+        ]
     },
     {
         id: "2", 
         ip: "127.0.0.1", 
         port: "3333", 
+        name: "Server #03",
         avatarSeed: "010001010010101011", 
         avatarColor: `rgb(237, 225, 166)`,
         connectedPlayers: 20,
@@ -54,6 +65,10 @@ const dummyServers: Array<Server> = [
         loadedProject: "testProject3",
         lastSaved: new Date(),
         status: ServerStatus.Online,
+        projectFiles: [
+            {id: "4", name: "test2.gxl"},
+            {id: "5", name: "test2.csv"}
+        ]
     },
 ]
 

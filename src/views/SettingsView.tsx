@@ -1,9 +1,12 @@
 import { Box, Button, Card, CardContent, Container, IconButton, List, ListItem, ListItemText, Modal, Stack, TextField, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserMinus } from "@fortawesome/free-solid-svg-icons";
-import { grey } from "@mui/material/colors";
-import { useState } from "react";
+import { faCrown, faUserMinus } from "@fortawesome/free-solid-svg-icons";
+import { grey, yellow } from "@mui/material/colors";
+import { useEffect, useState } from "react";
+import User from "../types/User";
+import { dummyUsers } from "../exampledata/exampledata";
+import Role from "../types/Role";
 
 const modalStyle = {
   position: 'absolute',
@@ -21,7 +24,18 @@ const modalStyle = {
 function SettingsView() {
     const [addUserModalOpen, setAddUserModalOpen] = useState(false);
     const [removeUserModalOpen, setRemoveUserModalOpen] = useState(false);
+    const [promoteDemoteUserModalOpen, setPromoteDemoteUserModalOpen] = useState(false);
+    const [users, setUsers] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+    useEffect(() => {
+      //TODO fetch from backend
+      setUsers(dummyUsers);
+    
+      return () => {
+      }
+    }, [])
+    
 
     return (
       <Container sx={{padding: "3em", height:"100vh"}}>
@@ -58,7 +72,7 @@ function SettingsView() {
                     Benutzer hinzufügen
                   </Typography>
                   <Typography id="remove-user-modal-description" sx={{marginTop: "2em"}}>
-                    Sind Sie sich sicher, dass Sie den Benutzer {selectedUser? selectedUser.username : ""} entfernen möchten?
+                    Sind Sie sich sicher, dass Sie den Benutzer <b>{selectedUser? selectedUser.username : ""}</b> entfernen möchten?
                   </Typography>
                   <Stack justifyContent="end" direction="row" spacing={2} sx={{marginTop: "2em"}}>
                     <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => setRemoveUserModalOpen(false)}>
@@ -70,6 +84,28 @@ function SettingsView() {
                   </Stack>
               </Box>
             </Modal>
+          <Modal
+            open={promoteDemoteUserModalOpen}
+            onClose={() => setPromoteDemoteUserModalOpen(false)}
+            aria-labelledby="promote-demote-user-modal-title"
+            aria-aria-describedby="promote-demote-modal-description">
+              <Box sx={modalStyle}>
+                  <Typography id="promote-demote-modal-title" variant="h6">
+                    Benutzer {selectedUser?.role == Role.Admin ? "herabstufen" : "befördern"}
+                  </Typography>
+                  <Typography id="promote-demote-modal-description" sx={{marginTop: "2em"}}>
+                    Sind Sie sich sicher, dass Sie den Benutzer <b>{selectedUser? selectedUser.username : ""}</b> {selectedUser?.role == Role.Admin ? "zum Benutzer herabstufen" : "zum Admin befördern"} möchten?
+                  </Typography>
+                  <Stack justifyContent="end" direction="row" spacing={2} sx={{marginTop: "2em"}}>
+                    <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => setPromoteDemoteUserModalOpen(false)}>
+                        Abbrechen
+                    </Button>
+                    <Button variant="contained" sx={{borderRadius:"25px"}}>
+                      {selectedUser?.role == Role.Admin ? "Herabstufen" : "Befördern"}
+                    </Button>
+                  </Stack>
+              </Box>
+          </Modal>
         <Header/>
         <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)", overflow: "auto"}}>
           <CardContent sx={{height: "calc(100% - 3em)"}}>
@@ -86,26 +122,30 @@ function SettingsView() {
               <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, overflow: "auto", minHeight: "100px", maxHeight: "100%"}}>
                 <CardContent>
                   <List>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px"}}
-                    secondaryAction={
-                      <IconButton onClick={() => {setSelectedUser({id: '0', username: 'benutzer2'}); setRemoveUserModalOpen(true);}}>
-                        <FontAwesomeIcon icon={faUserMinus}/>
-                      </IconButton>
-                    }>
-                      <ListItemText> 
-                        <Typography variant="subtitle2">benutzer2</Typography> 
-                      </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}
-                    secondaryAction={
-                      <IconButton onClick={() => {setSelectedUser({id: '1', username: 'benutzer1'}); setRemoveUserModalOpen(true);}}>
-                        <FontAwesomeIcon icon={faUserMinus}/>
-                      </IconButton>
-                    }>
-                      <ListItemText> 
-                        <Typography variant="subtitle2">benutzer1</Typography> 
-                      </ListItemText>
-                    </ListItem>
+                    {
+                      users && users.length > 0 ?
+                        users.map(
+                          (user) =>
+                            <ListItem key={user.id} sx={{backgroundColor: "white", borderRadius:"25px",  marginBottom:"1em"}}
+                            secondaryAction={
+                              <>
+                                <IconButton onClick={() => {setSelectedUser(user); setPromoteDemoteUserModalOpen(true);}}
+                                  disabled={user.role == Role.Admin && (users.filter((u) => u.role == Role.Admin)).length < 2}>
+                                  <FontAwesomeIcon icon={faCrown} color={user.role == Role.Admin ? yellow[600] : undefined}/>
+                                </IconButton>
+                                <IconButton onClick={() => {setSelectedUser(user); setRemoveUserModalOpen(true);}}
+                                  disabled={users.length < 2 || (user.role == Role.Admin && (users.filter((u) => u.role == Role.Admin)).length < 2)}>
+                                  <FontAwesomeIcon icon={faUserMinus}/>
+                                </IconButton>
+                              </>
+                            }>
+                              <ListItemText> 
+                                <Typography variant="subtitle2">{user.username}</Typography> 
+                              </ListItemText>
+                            </ListItem>
+                        )
+                      : <></>
+                    }
                   </List>
                 </CardContent>
               </Card>

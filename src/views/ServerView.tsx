@@ -1,31 +1,78 @@
-import { Box, Card, CardContent, Chip, Container, Grid, IconButton, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Chip, CircularProgress, Container, Grid, IconButton, List, ListItem, ListItemText, Modal, Stack, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faPenToSquare, faPlay, faRotate, faShare, faStop } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faPlay, faShare, faStop, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { grey } from "@mui/material/colors";
 import Avatar from "../components/Avatar";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import { dummyServers } from "../exampledata/exampledata";
+import Server from "../types/Server";
+import ServerStatus from "../types/ServerStatus";
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  maxWidth: "1200px",
+  minWidth: "400px",
+  bgcolor: 'background.paper',
+  borderRadius: "25px",
+  boxShadow: 24,
+  p: 4,
+};
 
 function ServerView() {
-    let avatarSeed = "";
+    const location = useLocation();
 
-    for(let i = 0; i < 18; i++){
-      avatarSeed = avatarSeed + Math.round(Math.random()).toString();
-    }
+    const [server, setServer] = useState<Server|undefined>(undefined);
+    const [showDeleteServerModal, setShowDeleteServerModal] = useState(false);
+
+    useEffect(() => {
+      //TODO: fetch from backend
+      const serverID = location.state.serverID;
+      if(serverID){
+        setServer(dummyServers.find((server) => server.id == serverID));
+      }
+      return () => {
+      }
+    }, [location.state])
     
-    const red = (Math.floor(Math.random() * 150) + 100).toString();
-    const green = (Math.floor(Math.random() * 150) + 100).toString();
-    const blue = (Math.floor(Math.random() * 150) + 100).toString();
-
+    if(!server){
+      return <CircularProgress/>
+    }
     return (
       <Container sx={{padding: "3em", height:"100vh"}}>
+        <Modal
+          open={showDeleteServerModal}
+          onClose={() => setShowDeleteServerModal(false)}
+          aria-labelledby="delete-server-modal-title"
+          aria-aria-describedby="delete-server-modal-description">
+            <Box sx={modalStyle}>
+                <Typography id="delete-server-modal-title" variant="h6">
+                  Server löschen
+                </Typography>
+                <Typography id="delete-server-modal-description" sx={{marginTop: "2em"}}>
+                  Sind Sie sich sicher, dass Sie den Server <b>{server? server.name : ""}</b> löschen möchten?
+                </Typography>
+                <Stack justifyContent="end" direction="row" spacing={2} sx={{marginTop: "2em"}}>
+                  <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => setShowDeleteServerModal(false)}>
+                    Abbrechen
+                  </Button>
+                  <Button variant="contained" color="error" sx={{borderRadius:"25px"}}>
+                    Löschen
+                  </Button>
+                </Stack>
+            </Box>
+        </Modal>
         <Header/>
         <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)", overflow: "auto"}}>
           <CardContent sx={{height: "calc(100% - 3em)"}}>
             <Stack direction="column" spacing={2} height={"100%"}>
               <Stack direction="row" sx={{justifyContent: 'space-between'}}>
                 <Stack direction="row">
-                  <Typography variant="h4">Gameserver#01</Typography>
-                  <IconButton><FontAwesomeIcon icon={faPenToSquare}/></IconButton>
+                  <Typography variant="h4">{server.name}</Typography>
                 </Stack>
                 <Stack direction="row">
                   <IconButton 
@@ -46,15 +93,20 @@ function ServerView() {
                       <FontAwesomeIcon icon={faStop}/>
                   </IconButton>
                   <IconButton
-                        aria-label="reload"
+                        aria-label="delete"
                         onMouseDown={(e) => {e.stopPropagation()}} 
                         onClick={(e) => {e.stopPropagation();
                                         e.preventDefault();
+                                        setShowDeleteServerModal(true);
                     }}>
-                      <FontAwesomeIcon icon={faRotate}/>
+                      <FontAwesomeIcon icon={faTrash}/>
                   </IconButton>
                   <Stack direction="column" sx={{justifyContent: "center", marginLeft: "1em"}}>
-                    <Chip color="success" label="Online"/>
+                    {server.status == ServerStatus.Online ? 
+                      <Chip color="success" label="Online"/>
+                        :
+                      <Chip color="error" label="Offline"/>
+                    }
                   </Stack>
                 </Stack>
               </Stack>
@@ -63,7 +115,7 @@ function ServerView() {
                   <Stack direction="column" spacing={1}>
                     <Box width={140} height={140}>
                       <Card sx={{width: "100%", height: "100%"}}>
-                        <Avatar width={140} height={140} avatarSeed={avatarSeed} avatarColor={`rgb(${red}, ${green}, ${blue})`}/>
+                        <Avatar width={140} height={140} avatarSeed={server.avatarSeed} avatarColor={server.avatarColor}/>
                       </Card>
                     </Box>
                   </Stack>
@@ -71,17 +123,20 @@ function ServerView() {
                 <Grid item md={3} xs={12}>
                   <Stack direction="column" spacing={1}>
                     <Typography variant="h6">Status</Typography>
-                    <Typography>Spieler: 0/10</Typography>
-                    <Typography>Online seit: 10m</Typography>
-                    <Typography>Ping: 30ms</Typography>
+                    <Typography>Spieler: {server.connectedPlayers}/{server.maxConnectedPlayers}</Typography>
+                    {server.status == ServerStatus.Online ? 
+                      <Typography>Online seit: {server.onlineSince.toLocaleDateString()} {server.onlineSince.toLocaleTimeString()}</Typography>
+                      : <></>
+                    }
+                    <Typography>Ping: {server.pingInMS}ms</Typography>
                   </Stack>
                 </Grid>
                 <Grid item md={4} xs={12}>
                   <Stack direction="column" spacing={1}>
                     <Typography variant="h6">Welt</Typography>
-                    <Typography>Geladene Szene: Beispielszene</Typography>
-                    <Typography>Geladenes Projekt: Beispielprojekt</Typography>
-                    <Typography>Zuletzt gespeichert: Vor 30 Sekunden</Typography>
+                    <Typography>Geladene Szene: {server.loadedScene}</Typography>
+                    <Typography>Geladenes Projekt: {server.loadedProject}</Typography>
+                    <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>
                   </Stack>
                 </Grid>
                 <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
@@ -93,8 +148,9 @@ function ServerView() {
                             sx={{display: "flex", flexDirection: "column"}} 
                             onMouseDown={(e) => {e.stopPropagation()}} 
                             onClick={(e) => {e.stopPropagation();
-                                            e.preventDefault();
-                        }}>
+                              e.preventDefault();
+                              navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`)
+                      }}>
                           <FontAwesomeIcon icon={faShare}/>
                           <Typography variant="button">Link teilen</Typography>
                       </IconButton>
@@ -103,7 +159,7 @@ function ServerView() {
                 </Grid>
               </Grid>
               <Stack direction="row" sx={{justifyContent: 'space-between'}}>
-                <Typography variant="h6">Projektdaten: Beispielprojekt</Typography>
+                <Typography variant="h6">Projektdaten: {server.loadedProject}</Typography>
                 <IconButton 
                             onMouseDown={(e) => {e.stopPropagation()}} 
                             onClick={(e) => {e.stopPropagation();
@@ -115,33 +171,13 @@ function ServerView() {
               <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, overflow: "auto", minHeight: "100px"}}>
                 <CardContent>
                   <List>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.gxl</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
-                    <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginTop:"1em"}}>
-                      <ListItemText> <Typography variant="subtitle2">test.csv</Typography> </ListItemText>
-                    </ListItem>
+                    {
+                      server.projectFiles.map((projectFile) => 
+                        <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginBottom:"1em"}} key={projectFile.id}>
+                          <ListItemText> <Typography variant="subtitle2">{projectFile.name}</Typography> </ListItemText>
+                        </ListItem>
+                      )
+                    }
                   </List>
                 </CardContent>
               </Card>
