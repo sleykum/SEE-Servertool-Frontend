@@ -1,11 +1,11 @@
 import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Container, Grid, IconButton, List, ListItem, ListItemText, Modal, Snackbar, Stack, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faPlay, faShare, faStop, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faDownload, faPlay, faShare, faStop, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { grey } from "@mui/material/colors";
 import Avatar from "../components/Avatar";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { dummyServers } from "../exampledata/exampledata";
 import Server from "../types/Server";
 import ServerStatus from "../types/ServerStatus";
@@ -25,6 +25,7 @@ const modalStyle = {
 
 function ServerView() {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [server, setServer] = useState<Server|undefined>(undefined);
     const [showDeleteServerModal, setShowDeleteServerModal] = useState(false);
@@ -78,7 +79,7 @@ function ServerView() {
             <Stack direction="column" spacing={2} height={"100%"}>
               <Stack direction="row" sx={{justifyContent: 'space-between'}}>
                 <Stack direction="row">
-                  <Typography variant="h4">{server.name}</Typography>
+                  <Typography variant="h4"><Box display={"inline"} sx={{"&:hover" : {cursor: "pointer"}}}><FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}/></Box> {server.name}</Typography>
                 </Stack>
                 <Stack direction="row">
                   <IconButton 

@@ -4,7 +4,7 @@ import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router";
 import Avatar from "../components/Avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileUpload, faRepeat } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faFileUpload, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import getRandomSeed from "../util/getRandomSeed";
 import getRandomColor from "../util/getRandomColor";
@@ -23,7 +23,7 @@ function CreateServerView() {
         <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)", overflow: "auto"}}>
           <CardContent sx={{height: "calc(100% - 3em)"}}>
             <Stack direction="column" spacing={2} height={"100%"}>
-              <Typography variant="h4">Gameserver erstellen</Typography>
+              <Typography variant="h4"><Box display={"inline"} sx={{"&:hover" : {cursor: "pointer"}}}><FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}/></Box> Gameserver erstellen</Typography>
               <Stack direction="row" spacing={2}>
                 <Stack direction="column" flexGrow={1}>
                   <Typography variant="h6">Gameservereinstellungen:</Typography>

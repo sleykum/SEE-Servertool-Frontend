@@ -1,12 +1,13 @@
 import { Box, Button, Card, CardContent, Container, IconButton, List, ListItem, ListItemText, Modal, Stack, TextField, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCrown, faUserMinus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCrown, faUserMinus } from "@fortawesome/free-solid-svg-icons";
 import { grey, yellow } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import User from "../types/User";
 import { dummyUsers } from "../exampledata/exampledata";
 import Role from "../types/Role";
+import { useNavigate } from "react-router";
 
 const modalStyle = {
   position: 'absolute',
@@ -22,6 +23,8 @@ const modalStyle = {
 };
 
 function SettingsView() {
+    const navigate = useNavigate();
+
     const [addUserModalOpen, setAddUserModalOpen] = useState(false);
     const [removeUserModalOpen, setRemoveUserModalOpen] = useState(false);
     const [promoteDemoteUserModalOpen, setPromoteDemoteUserModalOpen] = useState(false);
@@ -110,7 +113,7 @@ function SettingsView() {
         <Card sx={{marginTop: "2em", borderRadius: "25px", height: "calc(100% - 100px)", overflow: "auto"}}>
           <CardContent sx={{height: "calc(100% - 3em)"}}>
             <Stack direction="column" spacing={2} height={"100%"}>
-              <Typography variant="h4">Einstellungen</Typography>              
+              <Typography variant="h4"><Box display={"inline"} sx={{"&:hover" : {cursor: "pointer"}}}><FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}/></Box> Einstellungen</Typography>              
               <Typography variant="h6">Organisationseinstellungen:</Typography>
               <TextField label="Name" variant="standard"/>
               <Stack justifyContent="end" direction="row" spacing={2}>
