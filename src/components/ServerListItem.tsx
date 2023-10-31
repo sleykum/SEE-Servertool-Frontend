@@ -3,19 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShare } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
 import Avatar from "./Avatar";
+import Server from "../types/Server";
+import ServerStatus from "../types/ServerStatus";
 
-function ServerListItem() {
+function ServerListItem(props: {server: Server}) {
     const navigate = useNavigate();
 
-    let avatarSeed = "";
-
-    for(let i = 0; i < 18; i++){
-      avatarSeed = avatarSeed + Math.round(Math.random()).toString();
-    }
-    
-    const red = (Math.floor(Math.random() * 150) + 100).toString();
-    const green = (Math.floor(Math.random() * 150) + 100).toString();
-    const blue = (Math.floor(Math.random() * 150) + 100).toString();
+    const server = props.server;
 
     return (
         <Box width={"100%"}>
@@ -28,7 +22,7 @@ function ServerListItem() {
                         <Typography variant="h6">Gameserver #01</Typography>
                         <Box width={100} height={100}>
                           <Card sx={{width: "100%", height: "100%"}}>
-                            <Avatar width={100} height={100} avatarSeed={avatarSeed} avatarColor={`rgb(${red}, ${green}, ${blue})`}/>
+                            <Avatar width={100} height={100} avatarSeed={server.avatarSeed} avatarColor={server.avatarColor}/>
                           </Card>
                         </Box>
                       </Stack>
@@ -36,22 +30,29 @@ function ServerListItem() {
                     <Grid item md={3} xs={12}>
                       <Stack direction="column" spacing={1}>
                         <Typography variant="h6">Status</Typography>
-                        <Typography>Spieler: 0/10</Typography>
-                        <Typography>Online seit: 10m</Typography>
-                        <Typography>Ping: 30ms</Typography>
+                        <Typography>Spieler: {server.connectedPlayers}/{server.maxConnectedPlayers}</Typography>
+                        {server.status == ServerStatus.Online ? 
+                          <Typography>Online seit: {server.onlineSince.toLocaleDateString()} {server.onlineSince.toLocaleTimeString()}</Typography>
+                          : <></>
+                        }
+                        <Typography>Ping: {server.pingInMS}ms</Typography>
                       </Stack>
                     </Grid>
                     <Grid item md={4} xs={12}>
                       <Stack direction="column" spacing={1}>
                         <Typography variant="h6">Welt</Typography>
-                        <Typography>Geladene Szene: Beispielszene</Typography>
-                        <Typography>Geladenes Projekt: Beispielprojekt</Typography>
-                        <Typography>Zuletzt gespeichert: Vor 30 Sekunden</Typography>
+                        <Typography>Geladene Szene: {server.loadedScene}</Typography>
+                        <Typography>Geladenes Projekt: {server.loadedProject}</Typography>
+                        <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
                       <Stack direction="column" spacing={1}>
-                        <Chip color="success" label="Online"/>
+                        {server.status == ServerStatus.Online ? 
+                          <Chip color="success" label="Online"/>
+                            :
+                          <Chip color="error" label="Offline"/>
+                        }
                         <Box display="flex" height="100%">
                           <IconButton 
                                 aria-label="Link teilen" 
@@ -60,6 +61,7 @@ function ServerListItem() {
                                 onMouseDown={(e) => {e.stopPropagation()}} 
                                 onClick={(e) => {e.stopPropagation();
                                                 e.preventDefault();
+                                                navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`)
                             }}>
                               <FontAwesomeIcon icon={faShare}/>
                               <Typography variant="button">Link teilen</Typography>

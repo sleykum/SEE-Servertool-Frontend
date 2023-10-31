@@ -1,13 +1,8 @@
-import { Route, Routes } from 'react-router'
-import LoginView from './views/LoginView'
-import HomeView from './views/HomeView'
-import ServerView from './views/ServerView'
-import CreateServerView from './views/CreateServerView'
-import SettingsView from './views/SettingsView'
-import PersonalSettingsView from './views/PersonalSettingsView'
 import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
 import { blueGrey } from '@mui/material/colors'
+import { AuthProvider } from './contexts/AuthContext'
+import Router from './Router'
 
 const theme = createTheme(
   {
@@ -24,16 +19,10 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes>
-        <Route path="/" element={<LoginView/>}/> 
-        <Route path="/home" element={<HomeView/>}/> 
-        <Route path="/server" element={<ServerView/>}/> 
-        <Route path="/createServer" element={<CreateServerView/>}/> 
-        <Route path="/settings" element={<SettingsView/>}/> 
-        <Route path="/personalSettings" element={<PersonalSettingsView/>}/> 
-      </Routes> 
+      <AuthProvider>
+        <Router/>
+      </AuthProvider>
     </ThemeProvider>
-    
   )
 }
 

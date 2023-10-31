@@ -73,7 +73,7 @@ function CreateServerView() {
                 </CardActionArea>
               </Card> 
               <Stack justifyContent="end" direction="row" spacing={2}>
-                <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => navigate('/home')}>
+                <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => navigate('/')}>
                     Abbrechen
                 </Button>
                 <Button variant="contained" sx={{borderRadius:"25px"}}>

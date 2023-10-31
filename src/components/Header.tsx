@@ -3,8 +3,17 @@ import  seeLogo from "../img/see-logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Header() {
+    const {setAuthenticated} = useContext(AuthContext);
+
+    function logout(){
+      setAuthenticated(false);
+      sessionStorage.setItem("authenticated", "")
+    }
+
     const navigate = useNavigate();
 
     return (
@@ -12,7 +21,7 @@ function Header() {
             <Container disableGutters>
                 <Toolbar disableGutters>
                     <Box sx={{flexGrow: 1, "&:hover" : {cursor: "pointer"}}}>
-                        <img src={seeLogo} height="64"  onClick={() => navigate('/home')}/>
+                        <img src={seeLogo} height="64"  onClick={() => navigate('/')}/>
                     </Box>
                     <IconButton size="large" onClick={() => navigate('/settings')}>
                         <FontAwesomeIcon icon={faCog}/>
@@ -20,7 +29,7 @@ function Header() {
                     <IconButton size="large" onClick={() => navigate('/personalSettings')}>
                         <FontAwesomeIcon icon={faUser}/>
                     </IconButton>
-                    <IconButton size="large" onClick={() => navigate('/')}>
+                    <IconButton size="large" onClick={() => logout()}>
                         <FontAwesomeIcon icon={faRightFromBracket}/>
                     </IconButton>
                 </Toolbar>
