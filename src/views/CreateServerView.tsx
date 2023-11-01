@@ -5,13 +5,15 @@ import { useNavigate } from "react-router";
 import Avatar from "../components/Avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFileUpload, faRepeat } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import getRandomSeed from "../util/getRandomSeed";
 import getRandomColor from "../util/getRandomColor";
 
 
 function CreateServerView() {
     const navigate = useNavigate();
+
+    const uploadRef = useRef<HTMLInputElement>(null);
 
     const [avatarSeed, setAvatarSeed] = useState(getRandomSeed());
     const [avatarColor, setAvatarColor] = useState(getRandomColor());
@@ -59,7 +61,8 @@ function CreateServerView() {
               <Typography variant="h6">Projekteinstellungen:</Typography>
               <TextField label="Projektname" variant="standard"/>
               <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, minHeight:"200px"}}>
-                <CardActionArea sx={{ height: "100%"}}>
+                <input id="fileUpload" type="file" ref={uploadRef}  style={{ display: 'none' }}/>
+                <CardActionArea sx={{ height: "100%"}} onClick={() => uploadRef.current?.click()}>
                   <CardContent>
                     <Box width={"100%"} height={"100%"} display="flex" justifyContent="center">
                       <Stack direction="column" justifyContent="center">

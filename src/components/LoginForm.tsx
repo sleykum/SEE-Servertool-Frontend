@@ -1,15 +1,35 @@
-import { Button, Card, CardContent, CardMedia, Divider, TextField } from "@mui/material";
+import { Button, Card, CardContent, CardMedia, Divider, FormControl, FormHelperText, TextField } from "@mui/material";
 import  seeLogo from "../img/see-logo.png";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { dummyUsers, userPasswordMap } from "../exampledata/exampledata";
 
 function LoginForm() {
-    const {setAuthenticated} = useContext(AuthContext);
+    const {setToken, setUser} = useContext(AuthContext);
+
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
 
     function authenticate(){
-      setAuthenticated(true);
-      sessionStorage.setItem("authenticated", "true");
+      if(!username && !password)
+      {
+        return;
+      }
+      const user = dummyUsers.find((user) => user.username == username);
+      if(user){
+        if(userPasswordMap.get(user) == password){
+          setError(false);
+          setToken("admin");
+          sessionStorage.setItem("token", "admin");
+          setUser(user);
+        }
+      }
+      else {
+        setError(true);
+      }
     }
+      
 
     return (
       <Card sx={{borderRadius: "25px"}}>
@@ -22,9 +42,28 @@ function LoginForm() {
         />
         <Divider/>
         <CardContent>
-            <TextField label="Benutzername" type="text" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}} variant="standard"/>
-            <TextField label="Passwort" type="password" sx={{width: "100%", marginBottom:"1em"}} InputProps={{sx: {borderRadius: "15px"}}} variant="standard"/>
+          <FormControl sx={{width: "100%"}} error={error}>
+            <TextField 
+              label="Benutzername" 
+              type="text" 
+              sx={{width: "100%", marginBottom:"1em"}} 
+              InputProps={{sx: {borderRadius: "15px"}}} 
+              variant="standard"
+              value={username} 
+              onChange={(e) => setUserName(e.target.value)} 
+            />
+            <TextField 
+              label="Passwort" 
+              type="password" 
+              sx={{width: "100%", marginBottom:"1em"}}
+              InputProps={{sx: {borderRadius: "15px"}}} 
+              variant="standard"
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+            <FormHelperText hidden={!error}>E-Mail und Passwort stimmen nicht überein, oder Benutzer existiert nicht.</FormHelperText>
             <Button variant="contained" sx={{width:"100%", borderRadius: "15px", marginTop: "1em"}} onClick={() => authenticate()}>Anmelden</Button>
+          </FormControl>
         </CardContent>
       </Card>
     )

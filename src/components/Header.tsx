@@ -5,13 +5,14 @@ import { faUser, faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-i
 import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import Role from "../types/Role";
 
 function Header() {
-    const {setAuthenticated} = useContext(AuthContext);
+    const {setToken, user} = useContext(AuthContext);
 
     function logout(){
-      setAuthenticated(false);
-      sessionStorage.setItem("authenticated", "")
+      setToken("");
+      sessionStorage.setItem("token", "")
     }
 
     const navigate = useNavigate();
@@ -23,9 +24,13 @@ function Header() {
                     <Box sx={{flexGrow: 1, "&:hover" : {cursor: "pointer"}}}>
                         <img src={seeLogo} height="64"  onClick={() => navigate('/')}/>
                     </Box>
-                    <IconButton size="large" onClick={() => navigate('/settings')}>
-                        <FontAwesomeIcon icon={faCog}/>
-                    </IconButton>
+                    {
+                        user?.role == Role.Admin ?
+                            <IconButton size="large" onClick={() => navigate('/settings')}>
+                                <FontAwesomeIcon icon={faCog}/>
+                            </IconButton>
+                        : <></>
+                    }
                     <IconButton size="large" onClick={() => navigate('/personalSettings')}>
                         <FontAwesomeIcon icon={faUser}/>
                     </IconButton>

@@ -1,13 +1,24 @@
+import Organisation from "../types/Organisation"
 import Role from "../types/Role"
 import Server from "../types/Server"
 import ServerStatus from "../types/ServerStatus"
 import User from "../types/User"
 
+const dummyOrganisation: Organisation = {id: "0", name:"Testorganisation"}
+
 const dummyUsers: Array<User> = [
-    {id: "0", username: "Administrator", role: Role.Admin},
-    {id: "1", username: "Benutzer 1", role: Role.User},
-    {id: "2", username: "Benutzer 2", role: Role.User}
+    {username: "Administrator", role: Role.Admin},
+    {username: "Benutzer1", role: Role.Admin},
+    {username: "Benutzer2", role: Role.User}
 ]
+
+const userPasswordMap = new Map<User, string>(
+    [
+        [dummyUsers[0], 'passwort'],
+        [dummyUsers[1], '12345'],
+        [dummyUsers[2], 'test'],
+    ]
+)
 
 const dummyServers: Array<Server> = [
     {
@@ -72,4 +83,4 @@ const dummyServers: Array<Server> = [
     },
 ]
 
-export {dummyServers, dummyUsers}
+export {dummyServers, dummyUsers, userPasswordMap, dummyOrganisation}
