@@ -1,7 +1,7 @@
 import { AppBar, Box, Container, IconButton, Toolbar} from "@mui/material";
 import  seeLogo from "../img/see-logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faCog, faRightFromBracket, faBuilding, faBuildingUser } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
@@ -27,12 +27,12 @@ function Header() {
                     {
                         user?.role == Role.Admin ?
                             <IconButton size="large" onClick={() => navigate('/settings')}>
-                                <FontAwesomeIcon icon={faCog}/>
+                                <FontAwesomeIcon icon={faBuildingUser}/>
                             </IconButton>
                         : <></>
                     }
                     <IconButton size="large" onClick={() => navigate('/personalSettings')}>
-                        <FontAwesomeIcon icon={faUser}/>
+                        <FontAwesomeIcon icon={faCog}/>
                     </IconButton>
                     <IconButton size="large" onClick={() => logout()}>
                         <FontAwesomeIcon icon={faRightFromBracket}/>

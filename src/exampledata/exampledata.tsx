@@ -8,7 +8,7 @@ const dummyOrganisation: Organisation = {id: "0", name:"Testorganisation"}
 
 const dummyUsers: Array<User> = [
     {username: "Administrator", role: Role.Admin},
-    {username: "Benutzer1", role: Role.Admin},
+    {username: "Benutzer1", role: Role.User},
     {username: "Benutzer2", role: Role.User}
 ]
 
