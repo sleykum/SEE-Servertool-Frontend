@@ -41,19 +41,8 @@ function SettingsView() {
     const [promoteDemoteUserModalOpen, setPromoteDemoteUserModalOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [organisationName, setOrganisationName] = useState("");
-    const [changeOrganisationNameError, setChangeOrganisationNameError] = useState("");
-    const [addUserUsername, setAddUserUserName] = useState("");
+    const [addUserUsername, setAddUserUsername] = useState("");
     const [addUserPassword, setAddUserPassword] = useState("");
-
-    function changeOrganisationName() {
-      if(!organisationName){
-        setChangeOrganisationNameError("Organisationsname muss angegeben werden.");
-      } else {
-        setChangeOrganisationNameError("");
-        alert(organisationName);
-      }
-    }
 
     function addUser() {
       if(!addUserUsername || !addUserPassword){
@@ -65,7 +54,6 @@ function SettingsView() {
     useEffect(() => {
       //TODO fetch from backend
       setUsers(dummyUsers);
-      setOrganisationName(dummyOrganisation.name);
 
       return () => {
       }
@@ -89,7 +77,7 @@ function SettingsView() {
                     label="Benutzername" 
                     variant="standard"
                     value={addUserUsername}
-                    onChange={(e) => setAddUserUserName(e.target.value)}
+                    onChange={(e) => setAddUserUsername(e.target.value)}
                   />
                   <TextField 
                     label="Passwort" 
@@ -99,7 +87,7 @@ function SettingsView() {
                     InputProps={{endAdornment: <IconButton size="small" onClick={() => setAddUserPassword(generateRandomPassword())}><FontAwesomeIcon icon={faRepeat}/></IconButton>}}
                   />
                   <Stack justifyContent="end" direction="row" spacing={2}>
-                    <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => {setAddUserModalOpen(false); setAddUserUserName(""); setAddUserPassword("");}}>
+                    <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => {setAddUserModalOpen(false); setAddUserUsername(""); setAddUserPassword("");}}>
                         Abbrechen
                     </Button>
                     <Button variant="contained" sx={{borderRadius:"25px"}} onClick={() => addUser()}>
@@ -159,20 +147,6 @@ function SettingsView() {
           <CardContent sx={{height: "calc(100% - 3em)"}}>
             <Stack direction="column" spacing={2} height={"100%"}>
               <Typography variant="h4"><Box display={"inline"} sx={{"&:hover" : {cursor: "pointer"}}}><FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}/></Box> Einstellungen</Typography>              
-              <Typography variant="h6">Organisationseinstellungen:</Typography>
-              <TextField 
-                label="Name" 
-                variant="standard"
-                error={!!changeOrganisationNameError}
-                helperText={changeOrganisationNameError}
-                value={organisationName}
-                onChange={(e) => setOrganisationName(e.target.value)}
-              />
-              <Stack justifyContent="end" direction="row" spacing={2}>
-                <Button variant="contained" sx={{borderRadius:"25px"}} onClick={() => changeOrganisationName()}>
-                  Speichern
-                </Button>
-              </Stack>
               <Typography variant="h6">Benutzerverwaltung:</Typography>
               <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, overflow: "auto", minHeight: "100px", maxHeight: "100%"}}>
                 <CardContent>

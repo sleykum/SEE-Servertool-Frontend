@@ -4,16 +4,20 @@ import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router";
 import Avatar from "../components/Avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faFileUpload, faRepeat } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faFileUpload, faRepeat, faX } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import getRandomSeed from "../util/getRandomSeed";
 import getRandomColor from "../util/getRandomColor";
-
+import { MuiFileInput } from 'mui-file-input';
 
 function CreateServerView() {
     const navigate = useNavigate();
 
-    const uploadRef = useRef<HTMLInputElement>(null);
+    const [code, setCode] = useState<File|null>(null);
+    const [gxl, setGxl] = useState<File|null>(null);
+    const [csv, setCsv] = useState<File|null>(null);
+    const [configuration, setConfiguration] = useState<File|null>(null);
+    const [solution, setSolution] = useState<File|null>(null);
 
     const [avatarSeed, setAvatarSeed] = useState(getRandomSeed());
     const [avatarColor, setAvatarColor] = useState(getRandomColor());
@@ -60,20 +64,13 @@ function CreateServerView() {
               </Stack>
               <Typography variant="h6">Projekteinstellungen:</Typography>
               <TextField label="Projektname" variant="standard"/>
-              <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, minHeight:"200px"}}>
-                <input id="fileUpload" type="file" ref={uploadRef}  style={{ display: 'none' }}/>
-                <CardActionArea sx={{ height: "100%"}} onClick={() => uploadRef.current?.click()}>
-                  <CardContent>
-                    <Box width={"100%"} height={"100%"} display="flex" justifyContent="center">
-                      <Stack direction="column" justifyContent="center">
-                        <FontAwesomeIcon icon={faFileUpload} size="10x" color={grey[500]}/>
-                        <Typography variant="h6" sx={{marginTop: "1em"}} color={grey[500]}>
-                          Hier klicken um Dateien hochzuladen
-                        </Typography>
-                      </Stack>
-                    </Box>
-                  </CardContent>
-                </CardActionArea>
+              <Typography variant="h6">Dateien:</Typography>
+              <Card sx={{borderRadius: "0px", flexGrow: 1, overflow: "auto"}} elevation={0}>
+                <MuiFileInput label="Code" placeholder="Code hochladen.." variant="standard" fullWidth value={code} onChange={(value) => setCode(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
+                <MuiFileInput label="GXL" placeholder="GXL hochladen.." variant="standard" fullWidth value={gxl} onChange={(value) => setGxl(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
+                <MuiFileInput label="CSV" placeholder="CSV hochladen.." variant="standard" fullWidth value={csv} onChange={(value) => setCsv(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
+                <MuiFileInput label="Config" placeholder="Config hochladen.." variant="standard" fullWidth value={configuration} onChange={(value) => setConfiguration(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
+                <MuiFileInput label="Solution" placeholder="Solution hochladen.." variant="standard" fullWidth value={solution} onChange={(value) => setSolution(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
               </Card> 
               <Stack justifyContent="end" direction="row" spacing={2}>
                 <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => navigate('/')}>
