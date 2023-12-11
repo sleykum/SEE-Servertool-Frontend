@@ -66,10 +66,10 @@ function CreateServerView() {
               <TextField label="Projektname" variant="standard"/>
               <Typography variant="h6">Dateien:</Typography>
               <Card sx={{borderRadius: "0px", flexGrow: 1, overflow: "auto"}} elevation={0}>
-                <MuiFileInput label="Code" placeholder="Code hochladen.." variant="standard" fullWidth value={code} onChange={(value) => setCode(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
-                <MuiFileInput label="GXL" placeholder="GXL hochladen.." variant="standard" fullWidth value={gxl} onChange={(value) => setGxl(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
-                <MuiFileInput label="CSV" placeholder="CSV hochladen.." variant="standard" fullWidth value={csv} onChange={(value) => setCsv(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
-                <MuiFileInput label="Config" placeholder="Config hochladen.." variant="standard" fullWidth value={configuration} onChange={(value) => setConfiguration(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
+                <MuiFileInput label="Code" placeholder="Code hochladen.." variant="standard" fullWidth value={code} onChange={(value) => setCode(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}} inputProps={{accept: '.zip'}}/>
+                <MuiFileInput label="GXL" placeholder="GXL hochladen.." variant="standard" fullWidth value={gxl} onChange={(value) => setGxl(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}} inputProps={{accept: '.gxl'}}/>
+                <MuiFileInput label="CSV" placeholder="CSV hochladen.." variant="standard" fullWidth value={csv} onChange={(value) => setCsv(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}} inputProps={{accept: '.csv'}}/>
+                <MuiFileInput label="Config" placeholder="Config hochladen.." variant="standard" fullWidth value={configuration} onChange={(value) => setConfiguration(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}} inputProps={{accept: '.cfg'}}/>
                 <MuiFileInput label="Solution" placeholder="Solution hochladen.." variant="standard" fullWidth value={solution} onChange={(value) => setSolution(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}}/>
               </Card> 
               <Stack justifyContent="end" direction="row" spacing={2}>
