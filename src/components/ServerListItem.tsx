@@ -49,9 +49,9 @@ function ServerListItem(props: {server: Server}) {
                     <Grid item md={4} xs={12}>
                       <Stack direction="column" spacing={1}>
                         <Typography variant="h6">Welt</Typography>
-                        <Typography>Geladene Szene: {server.loadedScene}</Typography>
-                        <Typography>Geladenes Projekt: {server.loadedProject}</Typography>
-                        <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>
+                        {server.loadedScene? <Typography>Geladene Szene: {server.loadedScene}</Typography> : <></>}
+                        {server.loadedProject? <Typography>Geladenes Projekt: {server.loadedProject}</Typography> : <></>}
+                        {server.lastSaved? <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>: <></>}
                       </Stack>
                     </Grid>
                     <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">

@@ -5,28 +5,24 @@ import { AuthContext } from "../contexts/AuthContext";
 import { dummyUsers, userPasswordMap } from "../exampledata/exampledata";
 
 function LoginForm() {
-    const {setToken, setUser} = useContext(AuthContext);
+    const {setUser, axiosInstance} = useContext(AuthContext);
 
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
 
-    function authenticate(){
+    async function authenticate(){
       if(!username && !password)
       {
         return;
       }
-      const user = dummyUsers.find((user) => user.username == username);
-      if(user){
-        if(userPasswordMap.get(user) == password){
-          setError(false);
-          setToken("admin");
-          sessionStorage.setItem("token", "admin");
-          setUser(user);
-        }
-      }
-      else {
+      try{
+        const getUserResponse = await axiosInstance.post("/user/signin", {username: username, password: password});
+        sessionStorage.setItem('username', getUserResponse.data.username);
+        setUser(getUserResponse.data);
+      } catch (e) {
         setError(true);
+
       }
     }
       

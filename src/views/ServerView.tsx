@@ -4,11 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faDownload, faPlay, faShare, faStop, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { grey } from "@mui/material/colors";
 import Avatar from "../components/Avatar";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { dummyServers } from "../exampledata/exampledata";
 import Server from "../types/Server";
 import ServerStatus from "../types/ServerStatus";
+import { AuthContext } from "../contexts/AuthContext";
 
 const modalStyle = {
   position: 'absolute',
@@ -24,6 +25,8 @@ const modalStyle = {
 };
 
 function ServerView() {
+    const {axiosInstance} = useContext(AuthContext);
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -32,12 +35,15 @@ function ServerView() {
     const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
 
     useEffect(() => {
-      //TODO: fetch from backend
-      const serverID = location.state.serverID;
-      if(serverID){
-        setServer(dummyServers.find((server) => server.id == serverID));
+      let isApiSubscribed = true;
+      const serverID = location.state.serverID; 
+      if(serverID && isApiSubscribed){
+        axiosInstance.get(`/server/${serverID}`).then(
+          (response) => setServer(response.data)
+        )  
       }
       return () => {
+        isApiSubscribed = false;
       }
     }, [location.state])
     
@@ -67,7 +73,8 @@ function ServerView() {
                   <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => setShowDeleteServerModal(false)}>
                     Abbrechen
                   </Button>
-                  <Button variant="contained" color="error" sx={{borderRadius:"25px"}}>
+                  <Button variant="contained" color="error" sx={{borderRadius:"25px"}} onClick={() => 
+                  axiosInstance.delete("/server/delete", {params: {id: server.id}}).then(() => navigate("/", {replace: true}))}>
                     Löschen
                   </Button>
                 </Stack>
@@ -84,7 +91,7 @@ function ServerView() {
                 <Stack direction="row">
                   <IconButton 
                         aria-label="start"
-                        disabled
+                        disabled = {server.status == ServerStatus.Online}
                         onMouseDown={(e) => {e.stopPropagation()}} 
                         onClick={(e) => {e.stopPropagation();
                                         e.preventDefault();
@@ -93,6 +100,7 @@ function ServerView() {
                   </IconButton>
                   <IconButton 
                         aria-label="stop"
+                        disabled = {server.status == ServerStatus.Offline}
                         onMouseDown={(e) => {e.stopPropagation()}} 
                         onClick={(e) => {e.stopPropagation();
                                         e.preventDefault();
@@ -141,9 +149,9 @@ function ServerView() {
                 <Grid item md={4} xs={12}>
                   <Stack direction="column" spacing={1}>
                     <Typography variant="h6">Welt</Typography>
-                    <Typography>Geladene Szene: {server.loadedScene}</Typography>
-                    <Typography>Geladenes Projekt: {server.loadedProject}</Typography>
-                    <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>
+                    {server.loadedScene? <Typography>Geladene Szene: {server.loadedScene}</Typography> : <></>}
+                    {server.loadedProject? <Typography>Geladenes Projekt: {server.loadedProject}</Typography> : <></>}
+                    {server.lastSaved? <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>: <></>}
                   </Stack>
                 </Grid>
                 <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
@@ -181,7 +189,7 @@ function ServerView() {
                 <CardContent>
                   <List>
                     {
-                      server.projectFiles.map((projectFile) => 
+                      server.projectFiles?.map((projectFile) => 
                         <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginBottom:"1em"}} key={projectFile.id}>
                           <ListItemText> <Typography variant="subtitle2">{projectFile.name}</Typography> </ListItemText>
                         </ListItem>

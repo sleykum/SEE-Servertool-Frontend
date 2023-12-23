@@ -14,7 +14,7 @@ function Router() {
 
   return (
     <BrowserRouter>
-      {token && user ? <PrivateRoutes/> : <PublicRoutes/>}
+      {user ? <PrivateRoutes/> : <PublicRoutes/>}
     </BrowserRouter>
   )
 }

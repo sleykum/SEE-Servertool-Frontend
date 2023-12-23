@@ -32,7 +32,7 @@ function generateRandomPassword(){
 }
 
 function SettingsView() {
-    const {user} = useContext(AuthContext);
+    const {user, axiosInstance} = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ function SettingsView() {
     const [addUserUsername, setAddUserUsername] = useState("");
     const [addUserPassword, setAddUserPassword] = useState("");
 
-    function addUser() {
+    async function addUser() {
       if(!addUserUsername || !addUserPassword){
         return;
       }
@@ -52,14 +52,18 @@ function SettingsView() {
     }
 
     useEffect(() => {
-      //TODO fetch from backend
-      setUsers(dummyUsers);
-
+      let isApiSubscribed = true;
+      if(isApiSubscribed){
+        axiosInstance.get("/user/all").then(
+          (response) => setUsers(response.data)
+        )
+      }
       return () => {
+        isApiSubscribed = false;
       }
     }, [])
     
-    if(user?.role != Role.Admin){
+    if(!user?.roles.some((item) => item.name == "ROLE_ADMIN")){
       return <Navigate to="/"/>
     } 
     else return (
@@ -127,17 +131,17 @@ function SettingsView() {
             aria-aria-describedby="promote-demote-modal-description">
               <Box sx={modalStyle}>
                   <Typography id="promote-demote-modal-title" variant="h6">
-                    Benutzer {selectedUser?.role == Role.Admin ? "herabstufen" : "befördern"}
+                    Benutzer {selectedUser?.roles.some((item) => item.name == "ROLE_ADMIN") ? "herabstufen" : "befördern"}
                   </Typography>
                   <Typography id="promote-demote-modal-description" sx={{marginTop: "2em"}}>
-                    Sind Sie sich sicher, dass Sie den Benutzer <b>{selectedUser? selectedUser.username : ""}</b> {selectedUser?.role == Role.Admin ? "zum Benutzer herabstufen" : "zum Admin befördern"} möchten?
+                    Sind Sie sich sicher, dass Sie den Benutzer <b>{selectedUser? selectedUser.username : ""}</b> {selectedUser?.roles.some((item) => item.name == "ROLE_ADMIN") ? "zum Benutzer herabstufen" : "zum Admin befördern"} möchten?
                   </Typography>
                   <Stack justifyContent="end" direction="row" spacing={2} sx={{marginTop: "2em"}}>
                     <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => setPromoteDemoteUserModalOpen(false)}>
                         Abbrechen
                     </Button>
                     <Button variant="contained" sx={{borderRadius:"25px"}}>
-                      {selectedUser?.role == Role.Admin ? "Herabstufen" : "Befördern"}
+                      {selectedUser?.roles.some((item) => item.name == "ROLE_ADMIN") ? "Herabstufen" : "Befördern"}
                     </Button>
                   </Stack>
               </Box>
@@ -159,11 +163,11 @@ function SettingsView() {
                             secondaryAction={
                               <>
                                 <IconButton onClick={() => {setSelectedUser(user); setPromoteDemoteUserModalOpen(true);}}
-                                  disabled={user.role == Role.Admin && (users.filter((u) => u.role == Role.Admin)).length < 2}>
-                                  <FontAwesomeIcon icon={faCrown} color={user.role == Role.Admin ? yellow[600] : undefined}/>
+                                  disabled={user?.roles.some((item) => item.name == "ROLE_ADMIN") && (users.filter((u) => u?.roles.some((item) => item.name == "ROLE_ADMIN"))).length < 2}>
+                                  <FontAwesomeIcon icon={faCrown} color={user?.roles.some((item) => item.name == "ROLE_ADMIN") ? yellow[600] : undefined}/>
                                 </IconButton>
                                 <IconButton onClick={() => {setSelectedUser(user); setRemoveUserModalOpen(true);}}
-                                  disabled={users.length < 2 || (user.role == Role.Admin)}>
+                                  disabled={users.length < 2 || (user?.roles.some((item) => item.name == "ROLE_ADMIN"))}>
                                   <FontAwesomeIcon icon={faUserMinus}/>
                                 </IconButton>
                               </>
