@@ -6,7 +6,6 @@ import { grey } from "@mui/material/colors";
 import Avatar from "../components/Avatar";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { dummyServers } from "../exampledata/exampledata";
 import Server from "../types/Server";
 import ServerStatus from "../types/ServerStatus";
 import { AuthContext } from "../contexts/AuthContext";
@@ -126,7 +125,7 @@ function ServerView() {
                 </Stack>
               </Stack>
               <Grid container spacing={2} sx={{paddingRight: "32px"}}>
-                <Grid item md={3} xs={12}>
+                <Grid item md={2} xs={12}>
                   <Stack direction="column" spacing={1}>
                     <Box width={140} height={140}>
                       <Card sx={{width: "100%", height: "100%"}}>
@@ -135,23 +134,13 @@ function ServerView() {
                     </Box>
                   </Stack>
                 </Grid>
-                <Grid item md={3} xs={12}>
+                <Grid item md={8} xs={12}>
                   <Stack direction="column" spacing={1}>
                     <Typography variant="h6">Status</Typography>
-                    <Typography>Spieler: {server.connectedPlayers}/{server.maxConnectedPlayers}</Typography>
                     {server.status == ServerStatus.Online ? 
                       <Typography>Online seit: {server.onlineSince.toLocaleDateString()} {server.onlineSince.toLocaleTimeString()}</Typography>
-                      : <></>
+                      : <Typography>Offline seit: PLACEHOLDER</Typography>
                     }
-                    <Typography>Ping: {server.pingInMS}ms</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item md={4} xs={12}>
-                  <Stack direction="column" spacing={1}>
-                    <Typography variant="h6">Welt</Typography>
-                    {server.loadedScene? <Typography>Geladene Szene: {server.loadedScene}</Typography> : <></>}
-                    {server.loadedProject? <Typography>Geladenes Projekt: {server.loadedProject}</Typography> : <></>}
-                    {server.lastSaved? <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>: <></>}
                   </Stack>
                 </Grid>
                 <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
