@@ -12,7 +12,7 @@ function Avatar(props: {width:number, height:number, avatarSeed: string, avatarC
         if(ctx){
             ctx.clearRect(0,0, props.width, props.height);
             ctx.fillStyle = props.avatarColor;
-            ctx.globalCompositeOperation = "lighter";
+            ctx.globalCompositeOperation = "lighter"; //Fix gegen weiße Ränder um Kacheln
 
             for (let i = 0; i < props.avatarSeed.length; i++) {
                 const char = props.avatarSeed.charAt(i);
@@ -31,13 +31,12 @@ function Avatar(props: {width:number, height:number, avatarSeed: string, avatarC
                 }
             }
         }        
-    })
+    });
     
-
     return (
         <canvas width={props.width} height={props.height} ref={canvasRef}>
         </canvas>
-    )
+    );
   }
 
   export default Avatar;

@@ -46,6 +46,20 @@ function CreateServerView() {
 
     const [errors, setErrors] = useState(new Map<string, string>());
 
+    async function createServer(){
+      const createServerResponse = await axiosInstance.post("/server/create", {name: name, serverPassword: serverPassword, maxConnectedPlayers: maxConnectedPlayers, avatarSeed: avatarSeed, avatarColor: avatarColor});
+      if(!createServerResponse) {return;}
+      console.log(code);
+      if(code){
+        const form = new FormData();
+        form.append("id", createServerResponse.data.id);
+        form.append("fileType", "SOURCE");
+        form.append("file", code);
+
+        axiosInstance.post("/server/addFile", form)
+      }
+    }
+
     return (
       <Container sx={{padding: "3em", height:"100vh"}}>
         <Header/>
@@ -110,9 +124,7 @@ function CreateServerView() {
                   if(tempErrorsList.size > 0){
                     setErrors(tempErrorsList);
                   } else {
-                    axiosInstance.post("/server/create", {name: name, serverPassword: serverPassword, maxConnectedPlayers: maxConnectedPlayers, avatarSeed: avatarSeed, avatarColor: avatarColor}).then(
-                      () => navigate('/', {replace: true})
-                    );
+                    createServer()
                   }
                 }}>
                     Erstellen

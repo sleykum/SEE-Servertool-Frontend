@@ -5,7 +5,6 @@ import { faArrowLeft, faCrown, faRepeat, faUserMinus } from "@fortawesome/free-s
 import { grey, yellow } from "@mui/material/colors";
 import { useContext, useEffect, useState } from "react";
 import User from "../types/User";
-import { dummyOrganisation, dummyUsers } from "../exampledata/exampledata";
 import Role from "../types/Role";
 import { Navigate, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
@@ -48,7 +47,52 @@ function SettingsView() {
       if(!addUserUsername || !addUserPassword){
         return;
       }
-      alert(`username: ${addUserUsername}, passwort ${addUserPassword}`);
+      const addUserResponse = await axiosInstance.post('/user/create', {username: addUserUsername, password: addUserPassword, role: 'ROLE_USER'});
+      if(addUserResponse){
+        setAddUserModalOpen(false);
+        axiosInstance.get("/user/all").then(
+          (response) => setUsers(response.data)
+        )
+      }      
+    }
+
+    async function removeUser() {
+      if(!selectedUser){
+        return;
+      }
+      const addUserResponse = await axiosInstance.delete('/user/delete', {params: {username: selectedUser.username}});
+      if(addUserResponse){
+        setRemoveUserModalOpen(false);
+        axiosInstance.get("/user/all").then(
+          (response) => setUsers(response.data)
+        )
+      }      
+    }
+
+    async function promoteUser() {
+      if(!selectedUser){
+        return;
+      }
+      const promoteUserResponse = await axiosInstance.post('/user/addRoleToUser', {}, {params: {username: selectedUser.username, role: "ROLE_ADMIN"}});
+      if(promoteUserResponse){
+        setPromoteDemoteUserModalOpen(false);
+        axiosInstance.get("/user/all").then(
+          (response) => setUsers(response.data)
+        )
+      }      
+    }
+
+    async function demoteUser() {
+      if(!selectedUser){
+        return;
+      }
+      const demoteUserResponse = await axiosInstance.delete('/user/removeRoleFromUser', {params: {username: selectedUser.username, role: "ROLE_ADMIN"}});
+      if(demoteUserResponse){
+        setPromoteDemoteUserModalOpen(false);
+        axiosInstance.get("/user/all").then(
+          (response) => setUsers(response.data)
+        )
+      }      
     }
 
     useEffect(() => {
@@ -118,7 +162,7 @@ function SettingsView() {
                     <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => setRemoveUserModalOpen(false)}>
                         Abbrechen
                     </Button>
-                    <Button variant="contained" color="error" sx={{borderRadius:"25px"}}>
+                    <Button variant="contained" color="error" sx={{borderRadius:"25px"}} onClick={() => removeUser()}>
                         Entfernen
                     </Button>
                   </Stack>
@@ -140,7 +184,7 @@ function SettingsView() {
                     <Button variant="contained" color="secondary" sx={{borderRadius:"25px"}} onClick={() => setPromoteDemoteUserModalOpen(false)}>
                         Abbrechen
                     </Button>
-                    <Button variant="contained" sx={{borderRadius:"25px"}}>
+                    <Button variant="contained" sx={{borderRadius:"25px"}} onClick={() => {if(selectedUser?.roles.some((item) => item.name == "ROLE_ADMIN")){demoteUser()} else {promoteUser()}}}>
                       {selectedUser?.roles.some((item) => item.name == "ROLE_ADMIN") ? "Herabstufen" : "Befördern"}
                     </Button>
                   </Stack>
