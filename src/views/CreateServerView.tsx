@@ -32,7 +32,6 @@ function CreateServerView() {
 
     const [name, setName] = useState<string>("");
     const [serverPassword, setServerPassword] = useState<string>("");
-    const [maxConnectedPlayers, setMaxConnectedPlayers] = useState<string>("");
 
     const [code, setCode] = useState<File|null>(null);
     const [gxl, setGxl] = useState<File|null>(null);
@@ -47,7 +46,7 @@ function CreateServerView() {
     const [errors, setErrors] = useState(new Map<string, string>());
 
     async function createServer(){
-      const createServerResponse = await axiosInstance.post("/server/create", {name: name, serverPassword: serverPassword, maxConnectedPlayers: maxConnectedPlayers, avatarSeed: avatarSeed, avatarColor: avatarColor});
+      const createServerResponse = await axiosInstance.post("/server/create", {name: name, serverPassword: serverPassword, avatarSeed: avatarSeed, avatarColor: avatarColor});
       if(!createServerResponse) {return;}
       console.log(code);
       if(code){
@@ -55,7 +54,34 @@ function CreateServerView() {
         form.append("id", createServerResponse.data.id);
         form.append("fileType", "SOURCE");
         form.append("file", code);
-
+        axiosInstance.post("/server/addFile", form)
+      }
+      if(gxl){
+        const form = new FormData();
+        form.append("id", createServerResponse.data.id);
+        form.append("fileType", "GXL");
+        form.append("file", gxl);
+        axiosInstance.post("/server/addFile", form)
+      }
+      if(csv){
+        const form = new FormData();
+        form.append("id", createServerResponse.data.id);
+        form.append("fileType", "CSV");
+        form.append("file", csv);
+        axiosInstance.post("/server/addFile", form)
+      }
+      if(configuration){
+        const form = new FormData();
+        form.append("id", createServerResponse.data.id);
+        form.append("fileType", "CONFIG");
+        form.append("file", configuration);
+        axiosInstance.post("/server/addFile", form)
+      }
+      if(solution){
+        const form = new FormData();
+        form.append("id", createServerResponse.data.id);
+        form.append("fileType", "SOLUTION");
+        form.append("file", solution);
         axiosInstance.post("/server/addFile", form)
       }
     }
@@ -72,7 +98,6 @@ function CreateServerView() {
                   <Typography variant="h6">Gameservereinstellungen:</Typography>
                   <TextField value={name} onChange={(e) => setName(e.target.value)} label="Name" variant="standard"/>
                   <TextField value={serverPassword} onChange={(e) => setServerPassword(e.target.value)} label="Serverpasswort" variant="standard"/>
-                  <TextField value={maxConnectedPlayers} onChange={(e) => {if(!isNaN(Number(e.target.value))){setMaxConnectedPlayers(e.target.value)}}} label="Maximale Spieleranzahl" variant="standard"/>
                 </Stack>
                 <Stack direction="column" >
                   <Typography variant="h6">Server-Bild:</Typography>
@@ -117,9 +142,6 @@ function CreateServerView() {
                   let tempErrorsList = new Map<string, string>(errors);
                   if(!name){
                     tempErrorsList.set('name', "Name muss angegeben werden.");
-                  }
-                  if(Number(maxConnectedPlayers) > 1000){
-                    tempErrorsList.set('maxConnectedPlayers', "Zahl darf nicht größer als 1000 sein.");
                   }
                   if(tempErrorsList.size > 0){
                     setErrors(tempErrorsList);
