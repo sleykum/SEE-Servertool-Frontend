@@ -48,7 +48,6 @@ function CreateServerView() {
     async function createServer(){
       const createServerResponse = await axiosInstance.post("/server/create", {name: name, serverPassword: serverPassword, avatarSeed: avatarSeed, avatarColor: avatarColor});
       if(!createServerResponse) {return;}
-      console.log(code);
       if(code){
         const form = new FormData();
         form.append("id", createServerResponse.data.id);
@@ -84,6 +83,7 @@ function CreateServerView() {
         form.append("file", solution);
         axiosInstance.post("/server/addFile", form)
       }
+      navigate('/', {replace: true});
     }
 
     return (

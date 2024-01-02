@@ -25,9 +25,9 @@ function ServerListItem(props: {server: Server}) {
               <CardActionArea onClick={() => navigate('/server', {state: {serverID : server.id}})}>
                 <CardContent>
                   <Grid container spacing={2}>
-                    <Grid item md={3} xs={12}>
+                    <Grid item md={2} xs={12}>
                       <Stack direction="column" spacing={1}>
-                        <Typography variant="h6">{server.name}</Typography>
+                        
                         <Box width={100} height={100}>
                           <Card sx={{width: "100%", height: "100%"}}>
                             <Avatar width={100} height={100} avatarSeed={server.avatarSeed} avatarColor={server.avatarColor}/>
@@ -35,32 +35,24 @@ function ServerListItem(props: {server: Server}) {
                         </Box>
                       </Stack>
                     </Grid>
-                    <Grid item md={3} xs={12}>
+                    <Grid item md={8} xs={12}>
                       <Stack direction="column" spacing={1}>
-                        <Typography variant="h6">Status</Typography>
-                        <Typography>Spieler: {server.connectedPlayers}/{server.maxConnectedPlayers}</Typography>
+                        <Typography variant="h6">{server.name}</Typography>
                         {server.status == ServerStatus.Online ? 
                           <Typography>Online seit: {server.onlineSince.toLocaleDateString()} {server.onlineSince.toLocaleTimeString()}</Typography>
-                          : <></>
+                          : <Typography>Offline seit: PLACEHOLDER</Typography>
                         }
-                        <Typography>Ping: {server.pingInMS}ms</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item md={4} xs={12}>
-                      <Stack direction="column" spacing={1}>
-                        <Typography variant="h6">Welt</Typography>
-                        {server.loadedScene? <Typography>Geladene Szene: {server.loadedScene}</Typography> : <></>}
-                        {server.loadedProject? <Typography>Geladenes Projekt: {server.loadedProject}</Typography> : <></>}
-                        {server.lastSaved? <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>: <></>}
-                      </Stack>
-                    </Grid>
-                    <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
-                      <Stack direction="column" spacing={1}>
                         {server.status == ServerStatus.Online ? 
                           <Chip color="success" label="Online"/>
                             :
                           <Chip color="error" label="Offline"/>
                         }
+                        
+                      </Stack>
+                    </Grid>
+                    <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
+                      <Stack direction="column" spacing={1}>
+                       
                         <Box display="flex" height="100%">
                           <IconButton 
                                 aria-label="Link teilen" 
