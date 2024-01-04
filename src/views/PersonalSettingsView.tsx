@@ -5,7 +5,6 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { dummyUsers, userPasswordMap } from "../exampledata/exampledata";
 
 function PersonalSettingsView() {
     const {axiosInstance, user, setUser} = useContext(AuthContext);

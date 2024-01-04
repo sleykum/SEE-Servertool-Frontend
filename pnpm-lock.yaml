@@ -14,9 +14,11 @@ specifiers:
   '@typescript-eslint/parser': ^5.61.0
   '@vitejs/plugin-react': ^4.0.1
   axios: ^1.6.2
+  blob-util: ^2.0.2
   eslint: ^8.44.0
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.4.1
+  file-saver: ^2.0.5
   http-proxy-middleware: ^2.0.6
   mui-file-input: ^4.0.3
   react: ^18.2.0
@@ -35,6 +37,8 @@ dependencies:
   '@fortawesome/react-fontawesome': 0.2.0_n6er2j2sfff3f2kho72l4xukey
   '@mui/material': 5.14.7_t72as5nkc72wvuzlfm5pknb3h4
   axios: 1.6.2
+  blob-util: 2.0.2
+  file-saver: 2.0.5
   http-proxy-middleware: 2.0.6
   mui-file-input: 4.0.3_7dpmvxvlywghjijhfqfolqqhnm
   react: 18.2.0
@@ -1231,6 +1235,10 @@ packages:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
 
+  /blob-util/2.0.2:
+    resolution: {integrity: sha512-T7JQa+zsXXEa6/8ZhHcQEW1UFfVM49Ts65uBkFL6fz2QmrElqmbajIDJvuA0tEhRe5eIjpV9ZF+0RfZR9voJFQ==}
+    dev: false
+
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
     dependencies:
@@ -1598,6 +1606,10 @@ packages:
     dependencies:
       flat-cache: 3.0.4
     dev: true
+
+  /file-saver/2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+    dev: false
 
   /fill-range/7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}

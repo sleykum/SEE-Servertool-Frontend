@@ -1,6 +1,3 @@
-import File from "./File";
-import ServerStatus from "./ServerStatus";
-
 type Server = {
     id: string;
     creationTime: number;
@@ -11,7 +8,7 @@ type Server = {
     avatarColor: string; 
     startTime: number;
     stopTime: number;
-    status: ServerStatus;
+    serverStatusType: string;
 }
 
 export default Server

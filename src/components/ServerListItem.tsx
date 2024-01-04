@@ -4,7 +4,6 @@ import { faShare } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
 import Avatar from "./Avatar";
 import Server from "../types/Server";
-import ServerStatus from "../types/ServerStatus";
 import { useState } from "react";
 
 function ServerListItem(props: {server: Server}) {
@@ -38,7 +37,7 @@ function ServerListItem(props: {server: Server}) {
                     <Grid item md={8} xs={12}>
                       <Stack direction="column" spacing={1}>
                         <Typography variant="h6">{server.name}</Typography>
-                        {server.status == ServerStatus.Online ? 
+                        {server.serverStatusType == "ONLINE" ? 
                           <Typography>Online seit: {new Date(server.startTime*1000).toLocaleDateString()} {new Date(server.startTime*1000).toLocaleTimeString()}</Typography>
                           : <Typography>Offline seit: 
                             {
@@ -47,10 +46,9 @@ function ServerListItem(props: {server: Server}) {
                                 :
                                   ` ${new Date(server.creationTime*1000).toLocaleDateString()} ${new Date(server.creationTime*1000).toLocaleTimeString()}`
                             }
-                           
                             </Typography>
                         }
-                        {server.status == ServerStatus.Online ? 
+                        {server.serverStatusType == "ONLINE" ? 
                           <Chip color="success" label="Online"/>
                             :
                           <Chip color="error" label="Offline"/>

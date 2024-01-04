@@ -8,6 +8,7 @@ import { faArrowLeft, faFileUpload, faRepeat, faX } from "@fortawesome/free-soli
 import { useContext, useRef, useState } from "react";
 import { MuiFileInput } from 'mui-file-input';
 import { AuthContext } from "../contexts/AuthContext";
+import { config } from "@fortawesome/fontawesome-svg-core";
 
 function getRandomColor(){
   const red = (Math.floor(Math.random() * 150) + 100).toString();
@@ -48,40 +49,57 @@ function CreateServerView() {
     async function createServer(){
       const createServerResponse = await axiosInstance.post("/server/create", {name: name, serverPassword: serverPassword, avatarSeed: avatarSeed, avatarColor: avatarColor});
       if(!createServerResponse) {return;}
+
+      let codeResponse = null;
+      let gxlRespose = null;
+      let csvRespose = null;
+      let configurationResponse = null;
+      let solutionResponse = null;
+
       if(code){
         const form = new FormData();
         form.append("id", createServerResponse.data.id);
         form.append("fileType", "SOURCE");
         form.append("file", code);
-        axiosInstance.post("/server/addFile", form)
+        codeResponse = await axiosInstance.post("/server/addFile", form)
       }
       if(gxl){
         const form = new FormData();
         form.append("id", createServerResponse.data.id);
         form.append("fileType", "GXL");
         form.append("file", gxl);
-        axiosInstance.post("/server/addFile", form)
+        gxlRespose = await axiosInstance.post("/server/addFile", form)
       }
       if(csv){
         const form = new FormData();
         form.append("id", createServerResponse.data.id);
         form.append("fileType", "CSV");
         form.append("file", csv);
-        axiosInstance.post("/server/addFile", form)
+        csvRespose = await axiosInstance.post("/server/addFile", form)
       }
       if(configuration){
         const form = new FormData();
         form.append("id", createServerResponse.data.id);
         form.append("fileType", "CONFIG");
         form.append("file", configuration);
-        axiosInstance.post("/server/addFile", form)
+        configurationResponse = await axiosInstance.post("/server/addFile", form)
       }
       if(solution){
         const form = new FormData();
         form.append("id", createServerResponse.data.id);
         form.append("fileType", "SOLUTION");
         form.append("file", solution);
-        axiosInstance.post("/server/addFile", form)
+        solutionResponse = await axiosInstance.post("/server/addFile", form)
+      }
+
+      if(
+        !(code && !codeResponse 
+          || gxl && !gxlRespose 
+          || csv && !csvRespose 
+          || configuration && !configurationResponse 
+          || solution && !solutionResponse)
+      ) {
+        axiosInstance.put("/server/startServer", {}, {params: {id: createServerResponse.data.id}})
       }
       navigate('/', {replace: true});
     }
@@ -124,9 +142,8 @@ function CreateServerView() {
                 </Stack>
                 
               </Stack>
-              <Typography variant="h6">Projekteinstellungen:</Typography>
               <Typography variant="h6">Dateien:</Typography>
-              <Card sx={{borderRadius: "0px", flexGrow: 1, overflow: "auto"}} elevation={0}>
+              <Card sx={{borderRadius: "0px", flexGrow: 1, overflow: "auto", minHeight: "100px"}} elevation={0}>
                 <MuiFileInput label="Code" placeholder="Code hochladen.." variant="standard" fullWidth value={code} onChange={(value) => setCode(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}} inputProps={{accept: '.zip'}}/>
                 <MuiFileInput label="GXL" placeholder="GXL hochladen.." variant="standard" fullWidth value={gxl} onChange={(value) => setGxl(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}} inputProps={{accept: '.gxl'}}/>
                 <MuiFileInput label="CSV" placeholder="CSV hochladen.." variant="standard" fullWidth value={csv} onChange={(value) => setCsv(value)} clearIconButtonProps={{title: "Entfernen", children: <FontAwesomeIcon icon={faX}/>}} inputProps={{accept: '.csv'}}/>

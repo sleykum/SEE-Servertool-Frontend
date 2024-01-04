@@ -7,9 +7,10 @@ import Avatar from "../components/Avatar";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import Server from "../types/Server";
-import ServerStatus from "../types/ServerStatus";
 import { AuthContext } from "../contexts/AuthContext";
 import DummyFile from "../types/File";
+import { saveAs } from 'file-saver';
+import { base64StringToBlob } from 'blob-util';
 
 const modalStyle = {
   position: 'absolute',
@@ -41,6 +42,18 @@ function ServerView() {
 
     async function stopServer() {
       axiosInstance.put("/server/stopServer", {}, {params: {id: server?.id}})
+    }
+
+    function downloadFiles () {
+      if(files){
+        for(const file of files){
+          axiosInstance.get("/file/get", {params: {id: file.id}}).then(
+            (response) => {
+              saveAs(base64StringToBlob(response.data.content, response.data.contentType), response.data.originalFileName);
+            }
+          )
+        }
+      }
     }
 
     useEffect(() => {
@@ -118,7 +131,7 @@ function ServerView() {
                 <Stack direction="row">
                   <IconButton 
                         aria-label="start"
-                        disabled = {server.status == ServerStatus.Online}
+                        disabled = {server.serverStatusType == "ONLINE"}
                         onMouseDown={(e) => {e.stopPropagation()}} 
                         onClick={(e) => {e.stopPropagation();
                                         e.preventDefault();
@@ -128,7 +141,7 @@ function ServerView() {
                   </IconButton>
                   <IconButton 
                         aria-label="stop"
-                        disabled = {server.status == ServerStatus.Offline}
+                        disabled = {server.serverStatusType == "OFFLINE"}
                         onMouseDown={(e) => {e.stopPropagation()}} 
                         onClick={(e) => {e.stopPropagation();
                                         e.preventDefault();
@@ -146,7 +159,7 @@ function ServerView() {
                       <FontAwesomeIcon icon={faTrash}/>
                   </IconButton>
                   <Stack direction="column" sx={{justifyContent: "center", marginLeft: "1em"}}>
-                    {server.status == ServerStatus.Online ? 
+                    {server.serverStatusType == "ONLINE" ? 
                       <Chip color="success" label="Online"/>
                         :
                       <Chip color="error" label="Offline"/>
@@ -167,7 +180,7 @@ function ServerView() {
                 <Grid item md={8} xs={12}>
                   <Stack direction="column" spacing={1}>
                     <Typography variant="h6">Status</Typography>
-                    {server.status == ServerStatus.Online ? 
+                    {server.serverStatusType == "ONLINE" ? 
                       <Typography>Online seit: {new Date(server.startTime*1000).toLocaleDateString()} {new Date(server.startTime*1000).toLocaleTimeString()}</Typography>
                       : <Typography>Offline seit:
                         {
@@ -207,6 +220,7 @@ function ServerView() {
                             onMouseDown={(e) => {e.stopPropagation()}} 
                             onClick={(e) => {e.stopPropagation();
                                             e.preventDefault();
+                                            downloadFiles();
                         }}>
                           <FontAwesomeIcon icon={faDownload}/>
                       </IconButton>
