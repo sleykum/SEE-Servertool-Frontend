@@ -3,6 +3,7 @@ import ServerStatus from "./ServerStatus";
 
 type Server = {
     id: string;
+    creationTime: number;
     ip: string;
     port: string;
     name: string;

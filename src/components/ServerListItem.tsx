@@ -40,7 +40,15 @@ function ServerListItem(props: {server: Server}) {
                         <Typography variant="h6">{server.name}</Typography>
                         {server.status == ServerStatus.Online ? 
                           <Typography>Online seit: {new Date(server.startTime*1000).toLocaleDateString()} {new Date(server.startTime*1000).toLocaleTimeString()}</Typography>
-                          : <Typography>Offline seit: PLACEHOLDER</Typography>
+                          : <Typography>Offline seit: 
+                            {
+                               server.stopTime?
+                                  ` ${new Date(server.stopTime*1000).toLocaleDateString()} ${new Date(server.startTime*1000).toLocaleTimeString()}`
+                                :
+                                  ` ${new Date(server.creationTime*1000).toLocaleDateString()} ${new Date(server.creationTime*1000).toLocaleTimeString()}`
+                            }
+                           
+                            </Typography>
                         }
                         {server.status == ServerStatus.Online ? 
                           <Chip color="success" label="Online"/>

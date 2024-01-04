@@ -36,11 +36,11 @@ function ServerView() {
     const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
 
     async function startServer() {
-      
+      axiosInstance.put("/server/startServer", {}, {params: {id: server?.id}})
     }
 
     async function stopServer() {
-
+      axiosInstance.put("/server/stopServer", {}, {params: {id: server?.id}})
     }
 
     useEffect(() => {
@@ -122,6 +122,7 @@ function ServerView() {
                         onMouseDown={(e) => {e.stopPropagation()}} 
                         onClick={(e) => {e.stopPropagation();
                                         e.preventDefault();
+                                        startServer();
                     }}>
                       <FontAwesomeIcon icon={faPlay}/>
                   </IconButton>
@@ -131,6 +132,7 @@ function ServerView() {
                         onMouseDown={(e) => {e.stopPropagation()}} 
                         onClick={(e) => {e.stopPropagation();
                                         e.preventDefault();
+                                        stopServer();
                     }}>
                       <FontAwesomeIcon icon={faStop}/>
                   </IconButton>
@@ -166,8 +168,15 @@ function ServerView() {
                   <Stack direction="column" spacing={1}>
                     <Typography variant="h6">Status</Typography>
                     {server.status == ServerStatus.Online ? 
-                      <Typography>Online seit: {server.onlineSince.toLocaleDateString()} {server.onlineSince.toLocaleTimeString()}</Typography>
-                      : <Typography>Offline seit: PLACEHOLDER</Typography>
+                      <Typography>Online seit: {new Date(server.startTime*1000).toLocaleDateString()} {new Date(server.startTime*1000).toLocaleTimeString()}</Typography>
+                      : <Typography>Offline seit:
+                        {
+                           server.stopTime?
+                              ` ${new Date(server.stopTime*1000).toLocaleDateString()} ${new Date(server.startTime*1000).toLocaleTimeString()}`
+                            :
+                              ` ${new Date(server.creationTime*1000).toLocaleDateString()} ${new Date(server.creationTime*1000).toLocaleTimeString()}`
+                        }
+                      </Typography>
                     }
                   </Stack>
                 </Grid>
@@ -193,7 +202,7 @@ function ServerView() {
                 </Grid>
               </Grid>
               <Stack direction="row" sx={{justifyContent: 'space-between'}}>
-                <Typography variant="h6">Projektdaten: {server.loadedProject}</Typography>
+                <Typography variant="h6">Projektdaten:</Typography>
                 <IconButton 
                             onMouseDown={(e) => {e.stopPropagation()}} 
                             onClick={(e) => {e.stopPropagation();
