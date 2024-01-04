@@ -39,7 +39,7 @@ function ServerListItem(props: {server: Server}) {
                       <Stack direction="column" spacing={1}>
                         <Typography variant="h6">{server.name}</Typography>
                         {server.status == ServerStatus.Online ? 
-                          <Typography>Online seit: {server.onlineSince.toLocaleDateString()} {server.onlineSince.toLocaleTimeString()}</Typography>
+                          <Typography>Online seit: {new Date(server.startTime*1000).toLocaleDateString()} {new Date(server.startTime*1000).toLocaleTimeString()}</Typography>
                           : <Typography>Offline seit: PLACEHOLDER</Typography>
                         }
                         {server.status == ServerStatus.Online ? 

@@ -1,7 +1,6 @@
 import {Card, CardContent, Stack } from "@mui/material";
 import ServerListItem from "./ServerListItem";
 import { useContext, useEffect, useState } from "react";
-import { dummyServers } from "../exampledata/exampledata";
 import Server from "../types/Server";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -12,6 +11,12 @@ function ServerList() {
 
   useEffect(() => {
     let isApiSubscribed = true;
+    const fetchServers = setInterval(() => {
+      axiosInstance.get("/server/all").then(
+        (response) => setServers(response.data)
+      )
+    }, 30000);
+
     if(isApiSubscribed){
       axiosInstance.get("/server/all").then(
         (response) => setServers(response.data)
@@ -19,6 +24,7 @@ function ServerList() {
     }
     return () => {
       isApiSubscribed = false;
+      clearInterval(fetchServers);
     }
   }, [])
   

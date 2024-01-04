@@ -8,15 +8,9 @@ type Server = {
     name: string;
     avatarSeed: string;
     avatarColor: string; 
-    connectedPlayers: number;
-    maxConnectedPlayers: number;
-    onlineSince: Date;
-    pingInMS: number;
-    loadedScene: string;
-    loadedProject: string;
-    lastSaved: Date;
+    startTime: number;
+    stopTime: number;
     status: ServerStatus;
-    projectFiles: File[];
 }
 
 export default Server

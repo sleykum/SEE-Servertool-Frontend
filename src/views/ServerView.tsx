@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router";
 import Server from "../types/Server";
 import ServerStatus from "../types/ServerStatus";
 import { AuthContext } from "../contexts/AuthContext";
+import DummyFile from "../types/File";
 
 const modalStyle = {
   position: 'absolute',
@@ -30,21 +31,48 @@ function ServerView() {
     const navigate = useNavigate();
 
     const [server, setServer] = useState<Server|undefined>(undefined);
+    const [files, setFiles] = useState<DummyFile[] | undefined>(undefined);
     const [showDeleteServerModal, setShowDeleteServerModal] = useState(false);
     const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
 
+    async function startServer() {
+      
+    }
+
+    async function stopServer() {
+
+    }
+
     useEffect(() => {
       let isApiSubscribed = true;
-      const serverID = location.state.serverID; 
-      if(serverID && isApiSubscribed){
-        axiosInstance.get(`/server/${serverID}`).then(
-          (response) => setServer(response.data)
+      const fetchServer = setInterval(() => {
+        const serverID = location.state.serverID; 
+        if(serverID){
+          axiosInstance.get(`/server/`, {params: {id: serverID}}).then(
+            (response) => setServer(response.data)
+          )  
+        }
+      }, 30000);
+
+      if(isApiSubscribed && !server && location.state.serverID){
+        const serverID = location.state.serverID; 
+        if(serverID){
+          axiosInstance.get(`/server/`, {params: {id: serverID}}).then(
+            (response) => setServer(response.data)
+          )  
+        }
+      }
+      if(isApiSubscribed && location.state.serverID){
+        axiosInstance.get(`/server/files`, {params: {id: location.state.serverID}}).then(
+          (response) => setFiles(response.data)
         )  
       }
+
       return () => {
+        clearInterval(fetchServer);
         isApiSubscribed = false;
       }
-    }, [location.state])
+    }, [location.state]);
     
     if(!server){
       return <CircularProgress/>
@@ -178,9 +206,9 @@ function ServerView() {
                 <CardContent>
                   <List>
                     {
-                      server.projectFiles?.map((projectFile) => 
+                      files?.map((projectFile) => 
                         <ListItem sx={{backgroundColor: "white", borderRadius:"25px", marginBottom:"1em"}} key={projectFile.id}>
-                          <ListItemText> <Typography variant="subtitle2">{projectFile.name}</Typography> </ListItemText>
+                          <ListItemText> <Typography variant="subtitle2">{projectFile.originalFileName}</Typography> </ListItemText>
                         </ListItem>
                       )
                     }
