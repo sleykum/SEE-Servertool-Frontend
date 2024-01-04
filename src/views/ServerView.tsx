@@ -12,6 +12,21 @@ import DummyFile from "../types/File";
 import { saveAs } from 'file-saver';
 import { base64StringToBlob } from 'blob-util';
 
+function getServerStatus(serverStatusType: string){
+  if(serverStatusType == "ONLINE"){
+    return <Chip color="success" label="Online"/>;
+  }
+  if(serverStatusType == "OFFLINE"){
+    return <Chip color="error" label="Offline"/>;
+  }
+  if(serverStatusType == "STARTING"){
+    return <Chip color="warning" label="Startet"/>;
+  }
+  if(serverStatusType == "STOPPING"){
+    return <Chip color="warning" label="Stoppt"/>;    
+  }
+}
+
 const modalStyle = {
   position: 'absolute',
   top: '50%',
@@ -37,11 +52,21 @@ function ServerView() {
     const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
 
     async function startServer() {
-      axiosInstance.put("/server/startServer", {}, {params: {id: server?.id}})
+      if(server){
+        await axiosInstance.put("/server/startServer", {}, {params: {id: server.id}})
+        axiosInstance.get(`/server/`, {params: {id: server.id}}).then(
+          (response) => setServer(response.data)
+        )  
+      }
     }
 
     async function stopServer() {
-      axiosInstance.put("/server/stopServer", {}, {params: {id: server?.id}})
+      if(server){
+        await axiosInstance.put("/server/stopServer", {}, {params: {id: server?.id}})
+        axiosInstance.get(`/server/`, {params: {id: server.id}}).then(
+          (response) => setServer(response.data)
+        )  
+      }
     }
 
     function downloadFiles () {
@@ -159,11 +184,7 @@ function ServerView() {
                       <FontAwesomeIcon icon={faTrash}/>
                   </IconButton>
                   <Stack direction="column" sx={{justifyContent: "center", marginLeft: "1em"}}>
-                    {server.serverStatusType == "ONLINE" ? 
-                      <Chip color="success" label="Online"/>
-                        :
-                      <Chip color="error" label="Offline"/>
-                    }
+                    {getServerStatus(server.serverStatusType)}
                   </Stack>
                 </Stack>
               </Stack>
@@ -185,7 +206,7 @@ function ServerView() {
                       : <Typography>Offline seit:
                         {
                            server.stopTime?
-                              ` ${new Date(server.stopTime*1000).toLocaleDateString()} ${new Date(server.startTime*1000).toLocaleTimeString()}`
+                              ` ${new Date(server.stopTime*1000).toLocaleDateString()} ${new Date(server.stopTime*1000).toLocaleTimeString()}`
                             :
                               ` ${new Date(server.creationTime*1000).toLocaleDateString()} ${new Date(server.creationTime*1000).toLocaleTimeString()}`
                         }
@@ -197,18 +218,18 @@ function ServerView() {
                   <Stack direction="column" justifyContent="center">
                     <Box display="flex">
                       <IconButton 
-                            aria-label="Link teilen" 
+                            aria-label="IP teilen" 
                             size="large" 
                             sx={{display: "flex", flexDirection: "column"}} 
                             onMouseDown={(e) => {e.stopPropagation()}} 
                             onClick={(e) => {
                               e.stopPropagation();
                               e.preventDefault();
-                              navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`);
+                              navigator.clipboard.writeText(`${server.containerAddress}:${server.containerPort}`);
                               setShowLinkCopiedMessage(true);
                       }}>
                           <FontAwesomeIcon icon={faShare}/>
-                          <Typography variant="button">Link teilen</Typography>
+                          <Typography variant="button">IP teilen</Typography>
                       </IconButton>
                     </Box>
                   </Stack>

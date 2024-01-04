@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Container, IconButton, List, ListItem, ListItemText, Modal, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Container, Grid, IconButton, List, ListItem, ListItemText, Modal, Stack, TextField, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCrown, faRepeat, faUserMinus } from "@fortawesome/free-solid-svg-icons";
@@ -39,6 +39,9 @@ function SettingsView() {
     const [removeUserModalOpen, setRemoveUserModalOpen] = useState(false);
     const [promoteDemoteUserModalOpen, setPromoteDemoteUserModalOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
+    const [IP, setIP] = useState<string>("127.0.0.1");
+    const [portRangeFrom, setPortRangeFrom] = useState<number>(0);
+    const [portRangeTo, setPortRangeTo] = useState<number>(0);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [addUserUsername, setAddUserUsername] = useState("");
     const [addUserPassword, setAddUserPassword] = useState("");
@@ -195,6 +198,17 @@ function SettingsView() {
           <CardContent sx={{height: "calc(100% - 3em)"}}>
             <Stack direction="column" spacing={2} height={"100%"}>
               <Typography variant="h4"><Box display={"inline"} sx={{"&:hover" : {cursor: "pointer"}}}><FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}/></Box> Einstellungen</Typography>              
+              <Typography variant="h6">Servereinstellungen:</Typography>
+              <TextField value={IP} onChange={(e) => setIP(e.target.value)} label="IP" variant="standard"/>
+              <Grid container >
+                <Grid item md={6} xs={12}>
+                  <TextField sx={{width: "100%"}} type="number" value={portRangeFrom} onChange={(e) => setPortRangeFrom(Number(e.target.value))} label="Portbereich von" variant="standard"/>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField sx={{width: "100%"}}  type="number" value={portRangeTo} onChange={(e) => setPortRangeTo(Number(e.target.value))} label="Portbereich bis" variant="standard"/>
+                </Grid>
+              </Grid>
+              <Button variant="contained" sx={{borderRadius:"25px"}} onClick={() => {}}>Speichern</Button>
               <Typography variant="h6">Benutzerverwaltung:</Typography>
               <Card sx={{borderRadius: "25px", backgroundColor: grey[200], flexGrow: 1, overflow: "auto", minHeight: "100px", maxHeight: "100%"}}>
                 <CardContent>

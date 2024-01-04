@@ -6,6 +6,21 @@ import Avatar from "./Avatar";
 import Server from "../types/Server";
 import { useState } from "react";
 
+function getServerStatus(serverStatusType: string){
+  if(serverStatusType == "ONLINE"){
+    return <Chip color="success" label="Online"/>;
+  }
+  if(serverStatusType == "OFFLINE"){
+    return <Chip color="error" label="Offline"/>;
+  }
+  if(serverStatusType == "STARTING"){
+    return <Chip color="warning" label="Startet"/>;
+  }
+  if(serverStatusType == "STOPPING"){
+    return <Chip color="warning" label="Stoppt"/>;    
+  }
+}
+
 function ServerListItem(props: {server: Server}) {
     const navigate = useNavigate();
 
@@ -42,18 +57,13 @@ function ServerListItem(props: {server: Server}) {
                           : <Typography>Offline seit: 
                             {
                                server.stopTime?
-                                  ` ${new Date(server.stopTime*1000).toLocaleDateString()} ${new Date(server.startTime*1000).toLocaleTimeString()}`
+                                  ` ${new Date(server.stopTime*1000).toLocaleDateString()} ${new Date(server.stopTime*1000).toLocaleTimeString()}`
                                 :
                                   ` ${new Date(server.creationTime*1000).toLocaleDateString()} ${new Date(server.creationTime*1000).toLocaleTimeString()}`
                             }
                             </Typography>
                         }
-                        {server.serverStatusType == "ONLINE" ? 
-                          <Chip color="success" label="Online"/>
-                            :
-                          <Chip color="error" label="Offline"/>
-                        }
-                        
+                        {getServerStatus(server.serverStatusType)}
                       </Stack>
                     </Grid>
                     <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
@@ -61,17 +71,17 @@ function ServerListItem(props: {server: Server}) {
                        
                         <Box display="flex" height="100%">
                           <IconButton 
-                                aria-label="Link teilen" 
+                                aria-label="IP teilen" 
                                 size="large" 
                                 sx={{display: "flex", flexDirection: "column"}} 
                                 onMouseDown={(e) => {e.stopPropagation()}} 
                                 onClick={(e) => {e.stopPropagation();
                                                 e.preventDefault();
-                                                navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`);
+                                                navigator.clipboard.writeText(`${server.containerAddress}:${server.containerPort}`);
                                                 setShowLinkCopiedMessage(true);
-                            }}>
+                            }}> 
                               <FontAwesomeIcon icon={faShare}/>
-                              <Typography variant="button">Link teilen</Typography>
+                              <Typography variant="button">IP teilen</Typography>
                           </IconButton>
                         </Box>
                       </Stack>
