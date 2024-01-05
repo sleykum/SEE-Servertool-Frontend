@@ -8,6 +8,7 @@ type Server = {
     avatarColor: string; 
     startTime: number;
     stopTime: number;
+    serverPassword: string;
     serverStatusType: string;
 }
 

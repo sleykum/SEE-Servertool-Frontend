@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Container, Grid, IconButton, List, ListItem, ListItemText, Modal, Snackbar, Stack, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faDownload, faPlay, faShare, faStop, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faDownload, faEye, faPlay, faShare, faStop, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { grey } from "@mui/material/colors";
 import Avatar from "../components/Avatar";
 import { useContext, useEffect, useState } from "react";
@@ -50,6 +50,7 @@ function ServerView() {
     const [files, setFiles] = useState<DummyFile[] | undefined>(undefined);
     const [showDeleteServerModal, setShowDeleteServerModal] = useState(false);
     const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     async function startServer() {
       if(server){
@@ -212,6 +213,12 @@ function ServerView() {
                         }
                       </Typography>
                     }
+                    <Stack direction="row">
+                      <Typography sx={{lineHeight: "38px"}}>{showPassword ? server.serverPassword : server.serverPassword.replace(/./g, "\u25CF")}</Typography>
+                      <IconButton onClick={() => setShowPassword(!showPassword)}>
+                        <FontAwesomeIcon icon={faEye} />
+                      </IconButton>
+                    </Stack>
                   </Stack>
                 </Grid>
                 <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
