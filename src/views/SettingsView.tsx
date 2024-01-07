@@ -216,22 +216,22 @@ function SettingsView() {
                     {
                       users && users.length > 0 ?
                         users.map(
-                          (user) =>
-                            <ListItem key={user.username} sx={{backgroundColor: "white", borderRadius:"25px",  marginBottom:"1em"}}
+                          (listUser) =>
+                            <ListItem key={listUser.username} sx={{backgroundColor: "white", borderRadius:"25px",  marginBottom:"1em"}}
                             secondaryAction={
                               <>
-                                <IconButton onClick={() => {setSelectedUser(user); setPromoteDemoteUserModalOpen(true);}}
-                                  disabled={user?.roles.some((item) => item.name == "ROLE_ADMIN") && (users.filter((u) => u?.roles.some((item) => item.name == "ROLE_ADMIN"))).length < 2}>
-                                  <FontAwesomeIcon icon={faCrown} color={user?.roles.some((item) => item.name == "ROLE_ADMIN") ? yellow[600] : undefined}/>
+                                <IconButton onClick={() => {setSelectedUser(listUser); setPromoteDemoteUserModalOpen(true);}}
+                                  disabled={listUser?.roles.some((item) => item.name == "ROLE_ADMIN") && (users.filter((u) => u?.roles.some((item) => item.name == "ROLE_ADMIN"))).length < 2 || listUser.username == user.username}>
+                                  <FontAwesomeIcon icon={faCrown} color={listUser?.roles.some((item) => item.name == "ROLE_ADMIN") ? yellow[600] : undefined}/>
                                 </IconButton>
-                                <IconButton onClick={() => {setSelectedUser(user); setRemoveUserModalOpen(true);}}
-                                  disabled={users.length < 2 || (user?.roles.some((item) => item.name == "ROLE_ADMIN"))}>
+                                <IconButton onClick={() => {setSelectedUser(listUser); setRemoveUserModalOpen(true);}}
+                                  disabled={users.length < 2 || (listUser?.roles.some((item) => item.name == "ROLE_ADMIN"))}>
                                   <FontAwesomeIcon icon={faUserMinus}/>
                                 </IconButton>
                               </>
                             }>
                               <ListItemText> 
-                                <Typography variant="subtitle2">{user.username}</Typography> 
+                                <Typography variant="subtitle2">{listUser.username}</Typography> 
                               </ListItemText>
                             </ListItem>
                         )
