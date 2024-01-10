@@ -213,12 +213,14 @@ function ServerView() {
                         }
                       </Typography>
                     }
-                    <Stack direction="row">
-                      <Typography sx={{lineHeight: "38px"}}>{showPassword ? server.serverPassword : server.serverPassword.replace(/./g, "\u25CF")}</Typography>
-                      <IconButton onClick={() => setShowPassword(!showPassword)}>
-                        <FontAwesomeIcon icon={faEye} />
-                      </IconButton>
-                    </Stack>
+                    { server.serverPassword ? 
+                      <Stack direction="row">
+                        <Typography sx={{lineHeight: "38px"}}>{showPassword ? server.serverPassword : server.serverPassword.replace(/./g, "\u25CF")}</Typography>
+                        <IconButton onClick={() => setShowPassword(!showPassword)}>
+                          <FontAwesomeIcon icon={faEye} />
+                        </IconButton>
+                      </Stack> : <></>
+                    }
                   </Stack>
                 </Grid>
                 <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">

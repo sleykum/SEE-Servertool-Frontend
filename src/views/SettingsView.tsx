@@ -153,7 +153,7 @@ function SettingsView() {
             open={removeUserModalOpen}
             onClose={() => setRemoveUserModalOpen(false)}
             aria-labelledby="remove-user-modal-title"
-            aria-aria-describedby="remove-user-modal-description">
+            aria-describedby="remove-user-modal-description">
               <Box sx={modalStyle}>
                   <Typography id="remove-user-modal-title" variant="h6">
                     Benutzer entfernen
@@ -175,7 +175,7 @@ function SettingsView() {
             open={promoteDemoteUserModalOpen}
             onClose={() => setPromoteDemoteUserModalOpen(false)}
             aria-labelledby="promote-demote-user-modal-title"
-            aria-aria-describedby="promote-demote-modal-description">
+            aria-describedby="promote-demote-modal-description">
               <Box sx={modalStyle}>
                   <Typography id="promote-demote-modal-title" variant="h6">
                     Benutzer {selectedUser?.roles.some((item) => item.name == "ROLE_ADMIN") ? "herabstufen" : "befördern"}

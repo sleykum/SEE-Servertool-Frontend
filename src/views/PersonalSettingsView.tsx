@@ -26,7 +26,7 @@ function PersonalSettingsView() {
         return;
       } 
       try{
-        const changeUserNameResponse = await axiosInstance.put('/user/changeUsername', {}, {params: {oldUsername: user?.username, newUsername: newUsername}})
+        const changeUserNameResponse = await axiosInstance.put('/user/changeUsername', {oldUsername: user!.username, newUsername: newUsername, password: changeUsernamePassword})
         if(changeUserNameResponse){
           setUser(changeUserNameResponse.data);
           setShowChangedUsername(true);
@@ -45,7 +45,7 @@ function PersonalSettingsView() {
       } else {
         setChangePasswordErrors(new Map(changePasswordErrors.set('newPasswordRepeat', '')));
         try{
-          const changePasswordResponse = await axiosInstance.put('/user/changePassword', {}, {params: {username: user?.username, oldPassword: changePasswordPassword, newPassword: newPassword}})
+          const changePasswordResponse = await axiosInstance.put('/user/changePassword', {username: user!.username, oldPassword: changePasswordPassword, newPassword: newPassword})
           if(changePasswordResponse){
             setShowChangedPassword(true);
           }
