@@ -3,7 +3,7 @@ import User from '../types/User';
 import axios, { AxiosInstance } from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/api/v1",
+  baseURL: import.meta.env.VITE_APP_API_URL,
   timeout: 5000,
   withCredentials:true
 });
@@ -14,7 +14,7 @@ interface IAuthContext {
   axiosInstance: AxiosInstance;
 }
 
-const initialValue = {
+const initialValue: any = {
   user: null,
   setUser: () => {},
   axiosInstance: axiosInstance
