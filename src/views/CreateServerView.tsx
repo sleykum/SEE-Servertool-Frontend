@@ -114,7 +114,7 @@ function CreateServerView() {
               <Stack direction="row" spacing={2}>
                 <Stack direction="column" flexGrow={1}>
                   <Typography variant="h6">Gameservereinstellungen:</Typography>
-                  <TextField value={name} onChange={(e) => setName(e.target.value)} label="Name" variant="standard"/>
+                  <TextField error={!!errors.get("name")} helperText={errors.get("name")} value={name} onChange={(e) => setName(e.target.value)} label="Name" variant="standard"/>
                   <TextField value={serverPassword} onChange={(e) => setServerPassword(e.target.value)} label="Serverpasswort" variant="standard"/>
                 </Stack>
                 <Stack direction="column" >
@@ -156,7 +156,7 @@ function CreateServerView() {
                 </Button>
                 <Button variant="contained" sx={{borderRadius:"25px"}} onClick={() => {
                   setErrors(new Map<string, string>());
-                  let tempErrorsList = new Map<string, string>(errors);
+                  let tempErrorsList = new Map<string, string>();
                   if(!name){
                     tempErrorsList.set('name', "Name muss angegeben werden.");
                   }
