@@ -1,6 +1,6 @@
-type File = {
+type DummyFile = {
     id: string;
-    name: string;
+    originalFileName: string;
 }
 
-export default File
+export default DummyFile

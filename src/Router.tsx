@@ -10,11 +10,11 @@ import { useContext } from 'react'
 import { AuthContext } from './contexts/AuthContext'
 
 function Router() {
-  const { token, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
-      {token && user ? <PrivateRoutes/> : <PublicRoutes/>}
+      {user ? <PrivateRoutes/> : <PublicRoutes/>}
     </BrowserRouter>
   )
 }

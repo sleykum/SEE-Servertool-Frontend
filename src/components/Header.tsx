@@ -8,11 +8,12 @@ import { AuthContext } from "../contexts/AuthContext";
 import Role from "../types/Role";
 
 function Header() {
-    const {setToken, user} = useContext(AuthContext);
+    const {axiosInstance, user, setUser} = useContext(AuthContext);
 
     function logout(){
-      setToken("");
-      sessionStorage.setItem("token", "")
+      axiosInstance.post("/user/signout");
+      setUser(null);
+      sessionStorage.setItem("username", "")
     }
 
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Header() {
                         <img src={seeLogo} height="64"  onClick={() => navigate('/')}/>
                     </Box>
                     {
-                        user?.role == Role.Admin ?
+                        user?.roles.some((item) => item.name == "ROLE_ADMIN") ?
                             <IconButton size="large" onClick={() => navigate('/settings')}>
                                 <FontAwesomeIcon icon={faBuildingUser}/>
                             </IconButton>

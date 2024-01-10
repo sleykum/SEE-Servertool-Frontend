@@ -4,8 +4,22 @@ import { faShare } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
 import Avatar from "./Avatar";
 import Server from "../types/Server";
-import ServerStatus from "../types/ServerStatus";
 import { useState } from "react";
+
+function getServerStatus(serverStatusType: string){
+  if(serverStatusType == "ONLINE"){
+    return <Chip color="success" label="Online"/>;
+  }
+  if(serverStatusType == "OFFLINE"){
+    return <Chip color="error" label="Offline"/>;
+  }
+  if(serverStatusType == "STARTING"){
+    return <Chip color="warning" label="Startet"/>;
+  }
+  if(serverStatusType == "STOPPING"){
+    return <Chip color="warning" label="Stoppt"/>;    
+  }
+}
 
 function ServerListItem(props: {server: Server}) {
     const navigate = useNavigate();
@@ -25,9 +39,9 @@ function ServerListItem(props: {server: Server}) {
               <CardActionArea onClick={() => navigate('/server', {state: {serverID : server.id}})}>
                 <CardContent>
                   <Grid container spacing={2}>
-                    <Grid item md={3} xs={12}>
+                    <Grid item md={2} xs={12}>
                       <Stack direction="column" spacing={1}>
-                        <Typography variant="h6">{server.name}</Typography>
+                        
                         <Box width={100} height={100}>
                           <Card sx={{width: "100%", height: "100%"}}>
                             <Avatar width={100} height={100} avatarSeed={server.avatarSeed} avatarColor={server.avatarColor}/>
@@ -35,45 +49,39 @@ function ServerListItem(props: {server: Server}) {
                         </Box>
                       </Stack>
                     </Grid>
-                    <Grid item md={3} xs={12}>
+                    <Grid item md={8} xs={12}>
                       <Stack direction="column" spacing={1}>
-                        <Typography variant="h6">Status</Typography>
-                        <Typography>Spieler: {server.connectedPlayers}/{server.maxConnectedPlayers}</Typography>
-                        {server.status == ServerStatus.Online ? 
-                          <Typography>Online seit: {server.onlineSince.toLocaleDateString()} {server.onlineSince.toLocaleTimeString()}</Typography>
-                          : <></>
+                        <Typography variant="h6">{server.name}</Typography>
+                        {server.serverStatusType == "ONLINE" ? 
+                          <Typography>Online seit: {new Date(server.startTime*1000).toLocaleDateString()} {new Date(server.startTime*1000).toLocaleTimeString()}</Typography>
+                          : <Typography>Offline seit: 
+                            {
+                               server.stopTime?
+                                  ` ${new Date(server.stopTime*1000).toLocaleDateString()} ${new Date(server.stopTime*1000).toLocaleTimeString()}`
+                                :
+                                  ` ${new Date(server.creationTime*1000).toLocaleDateString()} ${new Date(server.creationTime*1000).toLocaleTimeString()}`
+                            }
+                            </Typography>
                         }
-                        <Typography>Ping: {server.pingInMS}ms</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item md={4} xs={12}>
-                      <Stack direction="column" spacing={1}>
-                        <Typography variant="h6">Welt</Typography>
-                        <Typography>Geladene Szene: {server.loadedScene}</Typography>
-                        <Typography>Geladenes Projekt: {server.loadedProject}</Typography>
-                        <Typography>Zuletzt gespeichert: {server.lastSaved.toLocaleDateString()} {server.lastSaved.toLocaleTimeString()}</Typography>
+                        {getServerStatus(server.serverStatusType)}
                       </Stack>
                     </Grid>
                     <Grid item md={2} textAlign="end" display="flex" justifyContent="end" alignContent="end">
                       <Stack direction="column" spacing={1}>
-                        {server.status == ServerStatus.Online ? 
-                          <Chip color="success" label="Online"/>
-                            :
-                          <Chip color="error" label="Offline"/>
-                        }
+                       
                         <Box display="flex" height="100%">
                           <IconButton 
-                                aria-label="Link teilen" 
+                                aria-label="IP teilen" 
                                 size="large" 
                                 sx={{display: "flex", flexDirection: "column"}} 
                                 onMouseDown={(e) => {e.stopPropagation()}} 
                                 onClick={(e) => {e.stopPropagation();
                                                 e.preventDefault();
-                                                navigator.clipboard.writeText(`${window.location.origin}/conntectTo?serverIp:${server.ip}&serverPort:${server.port}`);
+                                                navigator.clipboard.writeText(`${server.containerAddress}:${server.containerPort}`);
                                                 setShowLinkCopiedMessage(true);
-                            }}>
+                            }}> 
                               <FontAwesomeIcon icon={faShare}/>
-                              <Typography variant="button">Link teilen</Typography>
+                              <Typography variant="button">IP teilen</Typography>
                           </IconButton>
                         </Box>
                       </Stack>
