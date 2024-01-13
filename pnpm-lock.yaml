@@ -8,6 +8,7 @@ specifiers:
   '@fortawesome/free-solid-svg-icons': ^6.4.2
   '@fortawesome/react-fontawesome': ^0.2.0
   '@mui/material': ^5.14.7
+  '@types/file-saver': ^2.0.7
   '@types/node': ^20.10.8
   '@types/react': ^18.2.14
   '@types/react-dom': ^18.2.6
@@ -48,6 +49,7 @@ dependencies:
   react-router-dom: 6.15.0_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
+  '@types/file-saver': 2.0.7
   '@types/node': 20.10.8
   '@types/react': 18.2.14
   '@types/react-dom': 18.2.6
@@ -959,6 +961,10 @@ packages:
     resolution: {integrity: sha512-mrfKqIHnSZRyIzBcanNJmVQELTnX+qagEDlcKO90RgRBVOZGSGvZKeDihTRfWcqoDn5N/NkUcwWTccnpN18Tfg==}
     engines: {node: '>=14.0.0'}
     dev: false
+
+  /@types/file-saver/2.0.7:
+    resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==}
+    dev: true
 
   /@types/http-proxy/1.17.14:
     resolution: {integrity: sha512-SSrD0c1OQzlFX7pGu1eXxSEjemej64aaNPRhhVYUGqXh0BtldAAx37MG8btcumvpgKyZp1F5Gn3JkktdxiFv6w==}

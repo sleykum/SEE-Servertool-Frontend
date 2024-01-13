@@ -5,7 +5,6 @@ import { faArrowLeft, faCrown, faRepeat, faUserMinus } from "@fortawesome/free-s
 import { grey, yellow } from "@mui/material/colors";
 import { useContext, useEffect, useState } from "react";
 import User from "../types/User";
-import Role from "../types/Role";
 import { Navigate, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -39,7 +38,7 @@ function SettingsView() {
     const [removeUserModalOpen, setRemoveUserModalOpen] = useState(false);
     const [promoteDemoteUserModalOpen, setPromoteDemoteUserModalOpen] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
-    const [IP, setIP] = useState<string>("127.0.0.1");
+    const [ip, setIp] = useState<string>("127.0.0.1");
     const [portRangeFrom, setPortRangeFrom] = useState<number>(0);
     const [portRangeTo, setPortRangeTo] = useState<number>(0);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -199,7 +198,7 @@ function SettingsView() {
             <Stack direction="column" spacing={2} height={"100%"}>
               <Typography variant="h4"><Box display={"inline"} sx={{"&:hover" : {cursor: "pointer"}}}><FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}/></Box> Einstellungen</Typography>              
               <Typography variant="h6">Servereinstellungen:</Typography>
-              <TextField value={IP} onChange={(e) => setIP(e.target.value)} label="IP" variant="standard"/>
+              <TextField value={ip} onChange={(e) => setIp(e.target.value)} label="IP" variant="standard"/>
               <Grid container >
                 <Grid item md={6} xs={12}>
                   <TextField sx={{width: "100%"}} type="number" value={portRangeFrom} onChange={(e) => setPortRangeFrom(Number(e.target.value))} label="Portbereich von" variant="standard"/>
