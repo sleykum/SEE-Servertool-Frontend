@@ -4,11 +4,10 @@ import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router";
 import Avatar from "../components/Avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faFileUpload, faRepeat, faX } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useRef, useState } from "react";
+import { faArrowLeft, faRepeat, faX } from "@fortawesome/free-solid-svg-icons";
+import { useContext, useState } from "react";
 import { MuiFileInput } from 'mui-file-input';
 import { AuthContext } from "../contexts/AuthContext";
-import { config } from "@fortawesome/fontawesome-svg-core";
 
 function getRandomColor(){
   const red = (Math.floor(Math.random() * 150) + 100).toString();

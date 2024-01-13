@@ -127,7 +127,7 @@ function ServerView() {
           open={showDeleteServerModal}
           onClose={() => setShowDeleteServerModal(false)}
           aria-labelledby="delete-server-modal-title"
-          aria-aria-describedby="delete-server-modal-description">
+          aria-describedby="delete-server-modal-description">
             <Box sx={modalStyle}>
                 <Typography id="delete-server-modal-title" variant="h6">
                   Server löschen
