@@ -1,25 +1,19 @@
-FROM node:18-alpine AS builder
-
-# Dockerfile
-RUN apk add build-base libc6-compat gcompat curl && \
-    curl -fsSL https://get.pnpm.io/install.sh | sh -
-
-RUN mv /root/.local/share/pnpm/pnpm /usr/bin/
-
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-COPY . .
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-RUN pnpm install
-
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
-FROM nginx:alpine
-
-#COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-WORKDIR /usr/share/nginx/html
-
-COPY --from=builder /app/build .
-
-CMD ["nginx", "-g", "daemon off;"]
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+EXPOSE 80
+CMD [ "pnpm", "start" ]
