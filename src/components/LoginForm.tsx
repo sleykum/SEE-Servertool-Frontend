@@ -2,12 +2,11 @@ import { Button, Card, CardContent, CardMedia, Divider, FormControl, FormHelperT
 import  seeLogo from "../img/see-logo.png";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { dummyUsers, userPasswordMap } from "../exampledata/exampledata";
 
 function LoginForm() {
     const {setUser, axiosInstance} = useContext(AuthContext);
 
-    const [username, setUserName] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
 
@@ -46,7 +45,7 @@ function LoginForm() {
               InputProps={{sx: {borderRadius: "15px"}}} 
               variant="standard"
               value={username} 
-              onChange={(e) => setUserName(e.target.value)} 
+              onChange={(e) => setUsername(e.target.value)} 
             />
             <TextField 
               label="Passwort" 

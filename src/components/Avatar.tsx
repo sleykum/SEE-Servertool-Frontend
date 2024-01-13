@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-function Avatar(props: {width:number, height:number, avatarSeed: string, avatarColor: string}) {
+function Avatar(props: Readonly<{width:number, height:number, avatarSeed: string, avatarColor: string}>) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     
     useEffect(() => {

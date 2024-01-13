@@ -1,11 +1,10 @@
 import { AppBar, Box, Container, IconButton, Toolbar} from "@mui/material";
 import  seeLogo from "../img/see-logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faCog, faRightFromBracket, faBuilding, faBuildingUser } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faRightFromBracket, faBuildingUser } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import Role from "../types/Role";
 
 function Header() {
     const {axiosInstance, user, setUser} = useContext(AuthContext);
@@ -22,8 +21,8 @@ function Header() {
         <AppBar position="relative" color="transparent" elevation={0}>
             <Container disableGutters>
                 <Toolbar disableGutters>
-                    <Box sx={{flexGrow: 1, "&:hover" : {cursor: "pointer"}}}>
-                        <img src={seeLogo} height="64"  onClick={() => navigate('/')}/>
+                    <Box sx={{flexGrow: 1, "&:hover" : {cursor: "pointer"}}} onClick={() => navigate('/')}>
+                        <img src={seeLogo} height="64" alt="SEE Logo"/>
                     </Box>
                     {
                         user?.roles.some((item) => item.name == "ROLE_ADMIN") ?
