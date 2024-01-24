@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Container, Grid, IconButton, List, ListItem, ListItemText, Modal, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Container, IconButton, List, ListItem, ListItemText, Modal, Stack, TextField, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCrown, faRepeat, faUserMinus } from "@fortawesome/free-solid-svg-icons";
