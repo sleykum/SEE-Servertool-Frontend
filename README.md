@@ -1,4 +1,4 @@
-To launch the frontend you need to install [NodeJS](https://nodejs.org/en/download) and [pnpm](https://pnpm.io/installation).
+To launch the SEE-Servertool frontend you need to install [NodeJS](https://nodejs.org/en/download) and [pnpm](https://pnpm.io/installation).
 
 Firstly you need to install the packages using the following command.
 
