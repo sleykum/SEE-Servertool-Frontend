@@ -1,13 +1,13 @@
-Zum Ausführen des Frontends müssen [NodeJS](https://nodejs.org/en/download) und [pnpm](https://pnpm.io/installation) installiert sein.
+To launch the frontend you need to install [NodeJS](https://nodejs.org/en/download) and [pnpm](https://pnpm.io/installation).
 
-Um nun das Frontend auszuführen, müssen zunächst die Libraries installiert werden.
+Firstly you need to install the packages using the following command.
 
 `pnpm install`
 
-Hiernach kann das Frontend zu Entwicklungszwecken lokal gestartet werden
+Now you can start the frontend for development purposes using:
 
 `pnpm run dev`
 
-oder zu Deploymentzwecken gebaut werden.
+or build it for deployment using:
 
 `pnpm run build`
